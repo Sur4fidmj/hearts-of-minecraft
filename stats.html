@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics - Hearts of Minecraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .cta-buttons a {
+            padding: 15px 30px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .cta-buttons a:hover {
+            background: #0056b3;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 50px 0;
+        }
+        .content-block {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .content-block:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .content-block h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .content-block p {
+            color: #fff;
+        }
+        .stats { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .stat { flex: 1; min-width: 200px; background-color: rgba(0, 0, 0, 0.5); padding: 1rem; border: 1px solid #333; border-radius: 8px; transition: background-color 0.3s; }
+        .stat:hover { background-color: rgba(0, 0, 0, 0.7); }
+        .stat h3 { margin-top: 0; color: #fff; }
+        .list { background-color: rgba(0, 0, 0, 0.5); padding: 1rem; border: 1px solid #333; margin-bottom: 1rem; border-radius: 8px; transition: background-color 0.3s; }
+        .list:hover { background-color: rgba(0, 0, 0, 0.7); }
+        .list h3 { margin-top: 0; color: #66aaff; }
+        .list ul { list-style: none; padding: 0; }
+        .list li { padding: 0.5rem 0; border-bottom: 1px solid #333; }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+        .hex-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+            z-index: -2;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .search-bar {
+                margin: 0;
+            }
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hex-grid"></div>
+    <div class="main-container">
+        <header class="header">
+            <div class="logo">Hearts of Minecraft</div>
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="Search...">
+            </div>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="map.html">Live Map</a>
+                <a href="stats.html">Statistics</a>
+                <a href="foryou.html">For You</a>
+                <a href="blog.html">Create Blog</a>
+                <a href="about.html">About</a>
+                <a href="https://discord.gg/A9ZYsud9HY">Discord</a>
+            </nav>
+        </header>
+        <section class="hero">
+            <h1>Statistics</h1>
+            <p>Real-time server metrics and player activity tracking</p>
+        </section>
+        <div class="content">
+            <div class="content-block">
+                <div class="stats">
+                    <div class="stat">
+                        <h3>TOTAL UPTIME</h3>
+                        <p>46d 5h 56m Since first launch</p>
+                    </div>
+                    <div class="stat">
+                        <h3>CURRENT SESSION</h3>
+                        <p>8h 52m This restart</p>
+                    </div>
+                    <div class="stat">
+                        <h3>AVERAGE PLAYERS</h3>
+                        <p>5.46 Last 7 days</p>
+                    </div>
+                    <div class="stat">
+                        <h3>PEAK PLAYERS</h3>
+                        <p>33 All-time record</p>
+                    </div>
+                    <div class="stat">
+                        <h3>TOTAL SESSIONS</h3>
+                        <p>497 Server restarts</p>
+                    </div>
+                    <div class="stat">
+                        <h3>FIRST LAUNCH</h3>
+                        <p>2/13/2026 Server birthday</p>
+                    </div>
+                </div>
+                <div class="list">
+                    <h3>Currently Online</h3>
+                    <p id="onlineCount">Loading...</p>
+                    <ul id="onlineList">
+                        <li>Loading players...</li>
+                    </ul>
+                </div>
+                <div class="list">
+                    <h3>Most Active Players</h3>
+                    <ul>
+                        <li>1. Agent_melon14 - Last seen: 3 hours ago - 14d 4h 46m - 538 sessions</li>
+                        <li>2. DamageIn - Last seen: 4 hours ago - 10d 14h 59m - 354 sessions</li>
+                        <li>3. Ali_dinocraft - Last seen: 5 days ago - 10d 13h 38m - 301 sessions</li>
+                        <li>4. Gabbertjuh - Last seen: 47 min ago - 9d 18h 43m - 243 sessions</li>
+                        <li>5. Goldfuchs1 - Last seen: 1 day ago - 9d 10h 40m - 415 sessions</li>
+                    </ul>
+                </div>
+                <div class="list">
+                    <h3>Top Killers</h3>
+                    <ul>
+                        <li>1. Agent_melon14 - K/D Ratio: 4.87 - 💀 297 ☠️ 61 deaths</li>
+                        <li>2. ultragamer06 - K/D Ratio: 3.65 - 💀 157 ☠️ 43 deaths</li>
+                        <li>3. slobloblob - K/D Ratio: 0.45 - 💀 97 ☠️ 214 deaths</li>
+                        <li>4. Minek12345 - K/D Ratio: 0.71 - 💀 66 ☠️ 93 deaths</li>
+                        <li>5. Duckwarrior900 - K/D Ratio: 1.10 - 💀 55 ☠️ 50 deaths</li>
+                    </ul>
+                </div>
+                <div class="list">
+                    <h3>Player Count Over Time</h3>
+                    <label for="timeRange">Select Time Range:</label>
+                    <select id="timeRange">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30">Last 30 Days</option>
+                        <option value="90" selected>Last 90 Days</option>
+                    </select>
+                    <canvas id="playerChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    <footer>
+        <p>© 2026 HOI4 Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+    </footer>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const slideMenu = document.querySelector('.slide-menu');
+        const overlay = document.querySelector('.overlay');
+
+        hamburger.addEventListener('click', () => {
+            slideMenu.style.left = '0';
+            overlay.style.display = 'block';
+        });
+
+        overlay.addEventListener('click', () => {
+            slideMenu.style.left = '-250px';
+            overlay.style.display = 'none';
+        });
+    </script>
+    <script>
+        const onlineCount = document.getElementById('onlineCount');
+        const onlineList = document.getElementById('onlineList');
+
+        async function loadStats() {
+            try {
+                const response = await fetch('https://api.mcsrvstat.us/2/play.heartsofminecraft.com');
+                const data = await response.json();
+                if (data.online) {
+                    onlineCount.textContent = `${data.players.online}/${data.players.max} players online`;
+                    onlineList.innerHTML = data.players.list ? data.players.list.map(name => `<li>🎮 ${name}</li>`).join('') : '<li>No players online</li>';
+                } else {
+                    onlineCount.textContent = 'Server offline';
+                    onlineList.innerHTML = '<li>Server is currently offline</li>';
+                }
+            } catch (error) {
+                console.error('Error fetching server stats:', error);
+                onlineCount.textContent = 'Error loading stats';
+                onlineList.innerHTML = '<li>Unable to load player list</li>';
+            }
+        }
+
+        // Load stats on page load
+        loadStats();
+
+        // Update every 10 seconds
+        setInterval(loadStats, 10000);
+    </script>
+    <script>
+        const ctx = document.getElementById('playerChart').getContext('2d');
+        let playerChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Players Online',
+                    data: [],
+                    borderColor: '#66aaff',
+                    backgroundColor: 'rgba(102, 170, 255, 0.1)',
+                    fill: true,
+                    pointHoverRadius: 8,
+                    pointRadius: 3,
+                }]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function generateData(days) {
+            const labels = [];
+            const data = [];
+            const now = new Date();
+            for (let i = days - 1; i >= 0; i--) {
+                const date = new Date(now);
+                date.setDate(now.getDate() - i);
+                labels.push(date.toISOString().split('T')[0]);
+                data.push(Math.floor(Math.random() * 20) + 1); // Random players 1-20
+            }
+            return { labels, data };
+        }
+
+        function updateChart(days) {
+            const { labels, data } = generateData(days);
+            playerChart.data.labels = labels;
+            playerChart.data.datasets[0].data = data;
+            playerChart.update();
+        }
+
+        document.getElementById('timeRange').addEventListener('change', (e) => {
+            updateChart(parseInt(e.target.value));
+        });
+
+        // Initial load
+        updateChart(90);
+    </script>
+    <script>
+        document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                localStorage.setItem('searchTerm', this.value);
+                window.location = 'foryou.html';
+            }
+        });
+    </script>
+</body>
+</html>

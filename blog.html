@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog - HOI4 Minecraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .cta-buttons a {
+            padding: 15px 30px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .cta-buttons a:hover {
+            background: #0056b3;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 50px 0;
+        }
+        .content-block {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .content-block:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .content-block h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .content-block p {
+            color: #ccc;
+        }
+        .blog-post { border: 1px solid #333; margin: 1rem 0; padding: 1rem; background-color: rgba(0, 0, 0, 0.5); border-radius: 8px; transition: background-color 0.3s; }
+        .blog-post:hover { background-color: rgba(0, 0, 0, 0.7); }
+        .blog-post.newspaper { column-count: 2; font-family: 'Times New Roman', serif; font-size: 14px; line-height: 1.4; }
+        .blog-post h3 { color: #fff; }
+        .blog-post p { margin: 0.5rem 0; color: #ccc; }
+        .blog-post img { max-width: 100%; height: auto; margin: 0.5rem 0; }
+        .followBtn { background-color: #0066cc; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; transition: background-color 0.3s; }
+        .followBtn:hover { background-color: #004499; }
+        .tags { margin: 0.5rem 0; }
+        .tag { display: inline-block; background: #444; padding: 0.2rem 0.5rem; margin: 0.2rem; border-radius: 4px; }
+        .comments { margin-top: 1rem; }
+        .comment { margin: 0.5rem 0; padding: 0.5rem; background: #333; border-radius: 4px; }
+        form { margin-top: 2rem; background-color: rgba(0, 0, 0, 0.5); padding: 1rem; border: 1px solid #333; border-radius: 8px; }
+        label { display: block; margin: 0.5rem 0 0.2rem; color: #fff; }
+        input, textarea, select { width: 100%; padding: 0.5rem; border: 1px solid #333; border-radius: 8px; box-sizing: border-box; background-color: rgba(255, 255, 255, 0.1); color: #fff; }
+        button { padding: 0.5rem 1rem; background-color: #0066cc; color: white; border: none; cursor: pointer; border-radius: 4px; transition: background-color 0.3s; }
+        button:hover { background-color: #004499; }
+        #userPanel { background-color: rgba(0, 0, 0, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+        #authPanel { background-color: rgba(0, 0, 0, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; }
+        #notifications { background-color: rgba(0, 0, 0, 0.5); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+        #content { border:1px solid #333; min-height:100px; background: rgba(255, 255, 255, 0.1); color:#fff; padding:5px; border-radius: 8px; }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+        .hex-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+            z-index: -2;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .search-bar {
+                margin: 0;
+            }
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hex-grid"></div>
+    <div class="main-container">
+        <div class="header">
+            <div class="logo">Hearts of Minecraft</div>
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="Search...">
+            </div>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="map.html">Live Map</a>
+                <a href="stats.html">Statistics</a>
+                <a href="foryou.html">For You</a>
+                <a href="blog.html">Create Blog</a>
+                <a href="index.html#about">About</a>
+                <a href="https://discord.gg/A9ZYsud9HY" style="background: blue; border-radius: 5px; padding: 10px 15px;">Discord</a>
+            </nav>
+        </div>
+        <div class="hero">
+            <h1>Create Blog</h1>
+            <p>Share your thoughts and stories with the Hearts of Minecraft community.</p>
+        </div>
+        <div class="content">
+            <div class="content-block">
+                <div id="userPanel" style="display:none;">
+                    <p>Welcome, <img id="userPic" style="width:30px; height:30px; border-radius:50%; margin-right:5px; vertical-align:middle; object-fit: cover;" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><circle cx='15' cy='15' r='15' fill='%23333'/><text x='15' y='20' text-anchor='middle' fill='%23fff' font-size='12'>?</text></svg>" alt="Profile pic"> <span id="username"></span> | <button id="logout">Logout</button></p>
+                    <p>Followers: <span id="followersCount"></span> | Following: <span id="followingCount"></span></p>
+                    <label for="profilePic">Profile Picture (.jpg):</label>
+                    <input type="file" id="profilePic" accept=".jpg">
+                    <button id="uploadPic">Upload</button>
+                    <button id="viewNotifications">Notifications (<span id="notifCount">0</span>)</button>
+                    <div id="notifications" style="display:none;"></div>
+                </div>
+                <div id="authPanel">
+                    <h3>Login</h3>
+                    <input type="text" id="loginUser" placeholder="Username">
+                    <input type="password" id="loginPass" placeholder="Password">
+                    <button id="loginBtn">Login</button>
+                    <h3>Signup</h3>
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                    <input type="text" id="signupUser" placeholder="Username">
+                    <input type="password" id="signupPass" placeholder="Password">
+                    <input type="text" id="signupDiscord" placeholder="Discord Username (optional)">
+                    <select id="signupNation">
+                        <option value="">Select Nation (optional)</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Soviet Union">Soviet Union</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Italy">Italy</option>
+                        <option value="France">France</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="United States">United States</option>
+                        <option value="China">China</option>
+                    </select>
+                    <button id="signupBtn">Signup</button>
+                </div>
+                <section>
+                    <h2>Create a New Blog Post</h2>
+                </section>
+                <section id="submitSection" style="display:none;">
+                    <form id="blogForm">
+                        <h3>Add a New Blog Post</h3>
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" required>
+                        <label for="content">Content:</label>
+                        <div id="content" contenteditable="true" style="border:1px solid #333; min-height:100px; background: rgba(255, 255, 255, 0.1); color:#fff; padding:5px; border-radius: 8px;"></div>
+                        <div style="margin-top:5px;">
+                            <button type="button" id="boldBtn">B</button>
+                            <button type="button" id="italicBtn">I</button>
+                            <button type="button" id="underlineBtn">U</button>
+                        </div>
+                        <label for="image">Image (.jpg):</label>
+                        <input type="file" id="image" accept=".jpg">
+                        <label for="tags">Tags (comma separated):</label>
+                        <input type="text" id="tags" placeholder="e.g. gaming, news, fun">
+                        <label for="format">Format:</label>
+                        <select id="format">
+                            <option value="default">Default</option>
+                            <option value="newspaper">Newspaper</option>
+                        </select>
+                        <label for="fontSelect">Font:</label>
+                        <select id="fontSelect">
+                            <option value="Inter">Inter</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                        </select>
+                        <label for="bgColor">Background Color:</label>
+                        <input type="color" id="bgColor" value="#000000">
+                        <label>Publish:</label>
+                        <input type="radio" name="publish" value="now" checked> Immediately
+                        <input type="radio" name="publish" value="schedule"> Schedule
+                        <div id="scheduleDiv" style="display:none;">
+                            <input type="datetime-local" id="publishTime">
+                        </div>
+                        <div style="margin-top:5px;">
+                            <button type="button" id="boldBtn">B</button>
+                            <button type="button" id="italicBtn">I</button>
+                            <button type="button" id="underlineBtn">U</button>
+                            <button type="button" id="fontBtn">Apply Font</button>
+                        </div>
+                        <label><input type="checkbox" id="private"> Make Private (only you can see)</label>
+                        <button type="submit">Submit Blog</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2026 HOI4 Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+        </div>
+    </div>
+    <script>
+        const blogsContainer = document.getElementById('blogs');
+        const blogForm = document.getElementById('blogForm');
+        const userPanel = document.getElementById('userPanel');
+        const authPanel = document.getElementById('authPanel');
+        const submitSection = document.getElementById('submitSection');
+        const usernameSpan = document.getElementById('username');
+        const followersCount = document.getElementById('followersCount');
+        const followingCount = document.getElementById('followingCount');
+        const notifCount = document.getElementById('notifCount');
+        const notificationsDiv = document.getElementById('notifications');
+        const nations = {
+            'Germany': { tag: 'GER', color: '#808080' },
+            'Soviet Union': { tag: 'SOV', color: '#FF0000' },
+            'Japan': { tag: 'JAP', color: '#FFFF00' },
+            'Italy': { tag: 'ITA', color: '#00FF00' },
+            'France': { tag: 'FRA', color: '#0000FF' },
+            'United Kingdom': { tag: 'ENG', color: '#C8102E' },
+            'United States': { tag: 'USA', color: '#0033A0' },
+            'China': { tag: 'CHI', color: '#FFD700' }
+        };
+        // Get opposite color
+        function getOppositeColor(hex) {
+            hex = hex.replace('#', '');
+            let r = parseInt(hex.substr(0, 2), 16);
+            let g = parseInt(hex.substr(2, 2), 16);
+            let b = parseInt(hex.substr(4, 2), 16);
+            r = 255 - r;
+            g = 255 - g;
+            b = 255 - b;
+            return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        // Load users
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('users') || '[]');
+        }
+
+        // Save users
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Load blogs
+        function getBlogs() {
+            return JSON.parse(localStorage.getItem('blogs') || '[]');
+        }
+
+        // Save blogs
+        function saveBlogs(blogs) {
+            localStorage.setItem('blogs', JSON.stringify(blogs));
+        }
+
+        // Update UI based on login
+        function updateUI() {
+            if (currentUser) {
+                userPanel.style.display = 'block';
+                authPanel.style.display = 'none';
+                submitSection.style.display = 'block';
+                usernameSpan.innerHTML = getDisplayName(currentUser);
+                const users = getUsers();
+                const user = users.find(u => u.username === currentUser);
+                if (user) {
+                    followersCount.textContent = user.followers.length;
+                    followingCount.textContent = user.following.length;
+                    notifCount.textContent = user.notifications.length;
+                    if (user.profilePic) {
+                        document.getElementById('userPic').src = user.profilePic;
+                    }
+                }
+            } else {
+                userPanel.style.display = 'none';
+                authPanel.style.display = 'block';
+                submitSection.style.display = 'none';
+            }
+        }
+
+        // Load blogs
+        function loadBlogs() {
+            const blogs = getBlogs().filter(b => !b.private && (!b.publishTime || new Date(b.publishTime) <= new Date()));
+            blogsContainer.innerHTML = '';
+            blogs.forEach(blog => {
+                const post = document.createElement('div');
+                post.className = `blog-post ${blog.format || ''}`;
+                const bgStyle = blog.bgColor ? `background-color: ${blog.bgColor}; color: ${getOppositeColor(blog.bgColor)};` : '';
+                if (bgStyle) post.style.cssText = bgStyle;
+                post.innerHTML = `<h3>${blog.title}</h3><p><strong><img src="${getProfilePic(blog.author)}" style="width:30px; height:30px; border-radius:50%; margin-right:5px; vertical-align:middle; object-fit: cover;" alt="Profile pic"><a href="profile.html?user=${blog.author}" class="profileLink">${getDisplayName(blog.author)}</a></strong></p><p>Posted on ${new Date(blog.date).toLocaleString()}</p><div>${blog.content}</div>${blog.image ? `<img src="${blog.image}" alt="Blog image">` : ''}`;
+                if (currentUser && blog.author !== currentUser) {
+                    const followBtn = document.createElement('button');
+                    followBtn.className = 'followBtn';
+                    followBtn.textContent = isFollowing(blog.author) ? 'Unfollow' : 'Follow';
+                    followBtn.onclick = () => toggleFollow(blog.author);
+                    post.appendChild(followBtn);
+                }
+                if (currentUser === blog.author) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.onclick = () => {
+                        if (confirm('Are you sure you want to delete this blog?')) {
+                            deleteBlog(blog.id);
+                        }
+                    };
+                    post.appendChild(deleteBtn);
+                }
+                blogsContainer.appendChild(post);
+            });
+        }
+
+        // Get profile pic
+        function getProfilePic(username) {
+            const users = getUsers();
+            const user = users.find(u => u.username === username);
+            return user && user.profilePic ? user.profilePic : 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="%23333"/><text x="15" y="20" text-anchor="middle" fill="%23fff" font-size="12">?</text></svg>';
+        }
+
+        // Get display name with nation tag
+        function getDisplayName(username) {
+            const users = getUsers();
+            const user = users.find(u => u.username === username);
+            if (user && user.nation && nations[user.nation]) {
+                const { tag, color } = nations[user.nation];
+                return `${username} <span style="color: ${color}">[${tag}]</span>`;
+            }
+            return username;
+        }
+
+        // Delete blog
+        function deleteBlog(id) {
+            const blogs = getBlogs();
+            const newBlogs = blogs.filter(b => b.id !== id);
+            saveBlogs(newBlogs);
+            loadBlogs();
+        }
+
+        // Login
+        document.getElementById('loginBtn').onclick = () => {
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+            const users = getUsers();
+            const found = users.find(u => u.username === user && u.password === pass);
+            if (found) {
+                currentUser = user;
+                localStorage.setItem('currentUser', currentUser);
+                updateUI();
+            } else {
+                alert('Invalid credentials');
+            }
+        };
+
+        // Signup
+        document.getElementById('signupBtn').onclick = () => {
+            const user = document.getElementById('signupUser').value;
+            const pass = document.getElementById('signupPass').value;
+            const discord = document.getElementById('signupDiscord').value;
+            const nation = document.getElementById('signupNation').value;
+            const users = getUsers();
+            if (users.find(u => u.username === user)) {
+                alert('Username taken');
+                return;
+            }
+            users.push({username: user, password: pass, followers: [], following: [], notifications: [], likedTags: [], likedBlogs: [], profilePic: null, discord, nation});
+            saveUsers(users);
+            currentUser = user;
+            localStorage.setItem('currentUser', currentUser);
+            updateUI();
+        };
+
+        // Logout
+        document.getElementById('logout').onclick = () => {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUI();
+        };
+
+        // Upload profile pic
+        document.getElementById('uploadPic').onclick = async () => {
+            const file = document.getElementById('profilePic').files[0];
+            if (file) {
+                const pic = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.readAsDataURL(file);
+                });
+                const users = getUsers();
+                const user = users.find(u => u.username === currentUser);
+                if (user) {
+                    user.profilePic = pic;
+                    saveUsers(users);
+                    alert('Profile picture updated');
+                }
+            }
+        };
+
+        // Text formatting buttons
+        document.getElementById('boldBtn').onclick = () => document.execCommand('bold', false, null);
+        document.getElementById('italicBtn').onclick = () => document.execCommand('italic', false, null);
+        document.getElementById('underlineBtn').onclick = () => document.execCommand('underline', false, null);
+        document.getElementById('fontBtn').onclick = () => {
+            const font = document.getElementById('fontSelect').value;
+            document.execCommand('fontName', false, font);
+        };
+
+        // Publish options
+        document.querySelectorAll('input[name="publish"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('scheduleDiv').style.display = this.value === 'schedule' ? 'block' : 'none';
+            });
+        });
+
+        // View notifications
+        document.getElementById('viewNotifications').onclick = () => {
+            const users = getUsers();
+            const user = users.find(u => u.username === currentUser);
+            if (user) {
+                notificationsDiv.innerHTML = user.notifications.map(n => `<p>${n.message} (${n.date})</p>`).join('');
+                notificationsDiv.style.display = notificationsDiv.style.display === 'none' ? 'block' : 'none';
+                // Clear notifications after viewing
+                user.notifications = [];
+                saveUsers(users);
+                notifCount.textContent = '0';
+            }
+        };
+
+        // Submit blog
+        blogForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').innerHTML;
+            const tags = document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t);
+            const file = document.getElementById('image').files[0];
+            const privateBlog = document.getElementById('private').checked;
+            const format = document.getElementById('format').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const publishType = document.querySelector('input[name="publish"]:checked').value;
+            let publishTime = null;
+            if (publishType === 'schedule') {
+                publishTime = document.getElementById('publishTime').value;
+            }
+            let image = null;
+            if (file) {
+                image = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+            const seoFriendly = title && content.length > 50 && tags.length > 0;
+            const blogs = getBlogs();
+            const newBlog = {id: Date.now(), title, content, author: currentUser, date: new Date().toISOString(), image, private: privateBlog, tags, seoFriendly, format, comments: [], bgColor, publishTime};
+            blogs.push(newBlog);
+            saveBlogs(blogs);
+            // Notify followers
+            const users = getUsers();
+            const user = users.find(u => u.username === currentUser);
+            if (user) {
+                user.followers.forEach(follower => {
+                    const fUser = users.find(u => u.username === follower);
+                    if (fUser) {
+                        fUser.notifications.push({
+                            type: 'new_blog',
+                            from: currentUser,
+                            message: `${currentUser} published a new blog: ${title}`,
+                            date: new Date().toLocaleString()
+                        });
+                    }
+                });
+                saveUsers(users);
+            }
+            loadBlogs();
+            blogForm.reset();
+            document.getElementById('content').innerHTML = '';
+        });
+
+        // Initial load
+        updateUI();
+    </script>
+    <script>
+        document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                localStorage.setItem('searchTerm', this.value);
+                window.location = 'foryou.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - HOI4 Minecraft</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+        }
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .cta-buttons a {
+            padding: 15px 30px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .cta-buttons a:hover {
+            background: #0056b3;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 50px 0;
+        }
+        .content-block {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .content-block:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .content-block h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+        .content-block p {
+            color: #ccc;
+        }
+        .blog-post { border: 1px solid #333; margin: 1rem 0; padding: 1rem; background-color: rgba(0, 0, 0, 0.5); border-radius: 8px; transition: background-color 0.3s; }
+        .blog-post:hover { background-color: rgba(0, 0, 0, 0.7); }
+        .blog-post.newspaper { column-count: 2; font-family: 'Times New Roman', serif; font-size: 14px; line-height: 1.4; }
+        .blog-post h3 { color: #fff; }
+        .blog-post p { margin: 0.5rem 0; color: #ccc; }
+        .blog-post img { max-width: 100%; height: auto; margin: 0.5rem 0; }
+        .followBtn { background-color: #0066cc; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; transition: background-color 0.3s; }
+        .followBtn:hover { background-color: #004499; }
+        .tags { margin: 0.5rem 0; }
+        .tag { display: inline-block; background: #444; padding: 0.2rem 0.5rem; margin: 0.2rem; border-radius: 4px; }
+        .comments { margin-top: 1rem; }
+        .comment { margin: 0.5rem 0; padding: 0.5rem; background: #333; border-radius: 4px; }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+        .hex-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+            z-index: -2;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .search-bar {
+                margin: 0;
+            }
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hex-grid"></div>
+    <div class="main-container">
+        <div class="header">
+            <div class="logo">Hearts of Minecraft</div>
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="Search...">
+            </div>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="map.html">Live Map</a>
+                <a href="stats.html">Statistics</a>
+                <a href="foryou.html">For You</a>
+                <a href="blog.html">Create Blog</a>
+            </nav>
+        </div>
+        <div class="hero">
+            <h1>User Profile</h1>
+            <p>View user information and their blog posts.</p>
+        </div>
+        <div class="content">
+            <div class="content-block">
+                <section id="profileInfo">
+                    <img id="profilePic" style="width:50px; height:50px; border-radius:50%; margin-right:10px; vertical-align:middle; object-fit: cover;" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><circle cx='15' cy='15' r='15' fill='%23333'/><text x='15' y='20' text-anchor='middle' fill='%23fff' font-size='12'>?</text></svg>" alt="Profile pic">
+                    <h2 id="profileName" style="display:inline;">Loading...</h2>
+                    <p>Followers: <span id="followers">0</span> | Following: <span id="following">0</span></p>
+                </section>
+                <section>
+                    <h2>Blogs by this user</h2>
+                    <div id="userBlogs"></div>
+                </section>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2026 HOI4 Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+        </div>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('user');
+        const profileName = document.getElementById('profileName');
+        const followers = document.getElementById('followers');
+        const following = document.getElementById('following');
+        const userBlogs = document.getElementById('userBlogs');
+
+        const nations = {
+            'Germany': { tag: 'GER', color: '#808080' },
+            'Soviet Union': { tag: 'SOV', color: '#FF0000' },
+            'Japan': { tag: 'JAP', color: '#FFFF00' },
+            'Italy': { tag: 'ITA', color: '#00FF00' },
+            'France': { tag: 'FRA', color: '#0000FF' },
+            'United Kingdom': { tag: 'ENG', color: '#C8102E' },
+            'United States': { tag: 'USA', color: '#0033A0' },
+            'China': { tag: 'CHI', color: '#FFD700' }
+        };
+
+        // Get opposite color
+        function getOppositeColor(hex) {
+            hex = hex.replace('#', '');
+            let r = parseInt(hex.substr(0, 2), 16);
+            let g = parseInt(hex.substr(2, 2), 16);
+            let b = parseInt(hex.substr(4, 2), 16);
+            r = 255 - r;
+            g = 255 - g;
+            b = 255 - b;
+            return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        if (username) {
+            profileName.innerHTML = getDisplayName(username);
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.username === username);
+            if (user) {
+                followers.textContent = user.followers.length;
+                following.textContent = user.following.length;
+                if (user.profilePic) {
+                    document.getElementById('profilePic').src = user.profilePic;
+                }
+            }
+            const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
+            const userBlogsData = blogs.filter(b => b.author === username && (!b.private || username === localStorage.getItem('currentUser')) && (!b.publishTime || new Date(b.publishTime) <= new Date()));
+            userBlogs.innerHTML = userBlogsData.map(blog => {
+                const bgStyle = blog.bgColor ? `background-color: ${blog.bgColor}; color: ${getOppositeColor(blog.bgColor)};` : '';
+                return `
+                <div class="blog-post" style="${bgStyle}">
+                    <h3>${blog.title}</h3>
+                    <p>Posted on ${new Date(blog.date).toLocaleString()}</p>
+                    <div>${blog.content}</div>
+                    ${blog.image ? `<img src="${blog.image}" alt="Blog image">` : ''}
+                </div>
+            `}).join('');
+        } else {
+            profileName.textContent = 'User not found';
+        }
+    </script>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const slideMenu = document.querySelector('.slide-menu');
+        const overlay = document.querySelector('.overlay');
+
+        hamburger.addEventListener('click', () => {
+            slideMenu.style.left = '0';
+            overlay.style.display = 'block';
+        });
+
+        overlay.addEventListener('click', () => {
+            slideMenu.style.left = '-250px';
+            overlay.style.display = 'none';
+        });
+    </script>
+    <script>
+        document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                localStorage.setItem('searchTerm', this.value);
+                window.location = 'foryou.html';
+            }
+        });
+    </script>
+</body>
+</html>
