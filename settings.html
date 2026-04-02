@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Settings – customize your Hearts of Minecraft experience.">
+    <title>Settings – Hearts of Minecraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin:0; padding:0; font-family:'Inter',sans-serif;
+            background:url('https://media.discordapp.net/attachments/1475954657997357240/1489016606389436537/Gemini_Generated_Image_smoa5rsmoa5rsmoa.png?ex=69cee247&is=69cd90c7&hm=21043e307e8f4f2b4c366ae396286d7326e9f7df88d4a09f7f7fdb3c65ab9a55&=&format=webp&quality=lossless&width=974&height=544') no-repeat center center fixed;
+            background-size:cover;
+        }
+        body::before { content:''; position:fixed; inset:0; background:inherit; filter:blur(10px); transform:scale(1.05); z-index:-1; }
+        .hex-grid { position:fixed; inset:0; z-index:-2;
+            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat; }
+
+        .main-container {
+            max-width:900px; margin:0 auto; padding:20px;
+            background:rgba(0,0,0,.75); border-radius:12px;
+            box-shadow:0 0 40px rgba(0,0,0,.7);
+            backdrop-filter:blur(12px);
+            border:1px solid rgba(255,255,255,.1);
+            position:relative; z-index:1;
+        }
+        .header {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:20px 0; border-bottom:1px solid #222;
+        }
+        .logo { font-size:22px; font-weight:700; color:#fff; }
+        .search-bar { flex:1; margin:0 20px; }
+        .search-bar input { width:100%; padding:10px; border:none; border-radius:6px;
+            background:rgba(255,255,255,.1); color:#fff; box-sizing:border-box; font-family:inherit; }
+        .nav { display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
+        .nav a { color:#fff; text-decoration:none; padding:8px 14px; border-radius:6px;
+            transition:background .2s; font-weight:600; font-size:14px; }
+        .nav a:hover { background:rgba(255,255,255,.1); }
+        #nav-auth { display:flex; align-items:center; }
+
+        /* ── Page layout ── */
+        .settings-wrapper {
+            display:grid; grid-template-columns:200px 1fr; gap:24px;
+            padding:32px 0;
+        }
+
+        /* ── Sidebar ── */
+        .settings-sidebar { display:flex; flex-direction:column; gap:4px; }
+        .sidebar-item {
+            display:flex; align-items:center; gap:10px;
+            padding:10px 14px; border-radius:8px; cursor:pointer;
+            color:#aaa; font-size:14px; font-weight:500;
+            transition:background .15s, color .15s; text-decoration:none;
+        }
+        .sidebar-item:hover { background:rgba(255,255,255,.06); color:#fff; }
+        .sidebar-item.active { background:rgba(26,117,255,.2); color:#66aaff; font-weight:600; }
+        .sidebar-icon { width:18px; text-align:center; }
+
+        /* ── Sections ── */
+        .settings-section { display:none; }
+        .settings-section.active { display:block; }
+        .section-title { font-size:22px; font-weight:700; color:#fff; margin:0 0 6px; }
+        .section-sub { color:#666; font-size:14px; margin-bottom:24px; }
+
+        /* ── Card ── */
+        .set-card {
+            background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
+            border-radius:12px; padding:20px; margin-bottom:16px;
+        }
+        .set-card h3 { color:#fff; font-size:15px; margin:0 0 16px; font-weight:600; }
+
+        /* ── Language grid ── */
+        .lang-grid { display:flex; flex-wrap:wrap; gap:10px; }
+        .lang-btn {
+            display:flex; flex-direction:column; align-items:center; gap:4px;
+            padding:12px 18px; border-radius:10px;
+            background:rgba(255,255,255,.06); border:2px solid transparent;
+            cursor:pointer; transition:all .2s; color:#ccc; font-size:13px;
+            font-weight:600; font-family:inherit; min-width:90px;
+        }
+        .lang-btn .flag { font-size:28px; }
+        .lang-btn:hover { background:rgba(255,255,255,.12); color:#fff; }
+        .lang-btn.selected { border-color:#1a75ff; background:rgba(26,117,255,.15); color:#fff; }
+
+        /* ── Toggle switch ── */
+        .toggle-row {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:10px 0; border-bottom:1px solid rgba(255,255,255,.06);
+        }
+        .toggle-row:last-child { border-bottom:none; }
+        .toggle-label { color:#ccc; font-size:14px; }
+        .toggle-label small { display:block; color:#555; font-size:12px; margin-top:2px; }
+        .toggle {
+            position:relative; width:44px; height:24px; flex-shrink:0;
+        }
+        .toggle input { opacity:0; width:0; height:0; }
+        .toggle-slider {
+            position:absolute; inset:0; background:#333; border-radius:12px;
+            cursor:pointer; transition:background .2s;
+        }
+        .toggle-slider::after {
+            content:''; position:absolute; width:18px; height:18px;
+            left:3px; top:3px; background:#fff; border-radius:50%;
+            transition:transform .2s;
+        }
+        .toggle input:checked + .toggle-slider { background:#1a75ff; }
+        .toggle input:checked + .toggle-slider::after { transform:translateX(20px); }
+
+        /* ── Form elements ── */
+        .form-row { margin-bottom:12px; }
+        .form-row label { display:block; font-size:13px; color:#aaa; margin-bottom:5px; font-weight:500; }
+        .form-row input {
+            width:100%; padding:10px 12px; border:1px solid rgba(255,255,255,.1);
+            border-radius:8px; background:rgba(255,255,255,.06); color:#fff;
+            font-size:14px; font-family:inherit; outline:none;
+            transition:border-color .2s;
+        }
+        .form-row input:focus { border-color:#1a75ff; }
+
+        /* ── Buttons ── */
+        .btn {
+            padding:10px 20px; border-radius:8px; font-size:14px;
+            font-weight:600; cursor:pointer; border:none; font-family:inherit;
+            transition:filter .2s, transform .1s;
+        }
+        .btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
+        .btn-primary { background:#1a75ff; color:#fff; }
+        .btn-danger  { background:#c0392b; color:#fff; }
+        .btn-ghost   { background:rgba(255,255,255,.08); color:#ccc; border:1px solid rgba(255,255,255,.15); }
+
+        /* ── Save banner ── */
+        #save-banner {
+            position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+            background:#27ae60; color:#fff; padding:12px 28px;
+            border-radius:10px; font-weight:600; font-size:14px;
+            opacity:0; pointer-events:none; transition:opacity .3s; z-index:9999;
+        }
+        #save-banner.show { opacity:1; }
+
+        /* ── Danger zone ── */
+        .danger-box {
+            border:1px solid rgba(192,57,43,.3); background:rgba(192,57,43,.07);
+            border-radius:12px; padding:20px;
+        }
+        .danger-box h3 { color:#e74c3c; margin:0 0 8px; }
+        .danger-box p { color:#aaa; font-size:14px; margin:0 0 16px; }
+
+        /* ── Profile card ── */
+        .profile-card { display:flex; align-items:center; gap:20px; margin-bottom:20px; }
+        .profile-card-avatar {
+            width:72px; height:72px; border-radius:50%; object-fit:cover;
+            border:3px solid rgba(255,255,255,.2);
+        }
+        .profile-card-info h2 { margin:0 0 4px; color:#fff; font-size:18px; }
+        .profile-card-info p { margin:0; color:#666; font-size:13px; }
+
+        /* File input */
+        .file-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+        input[type="file"] { color:#aaa; font-size:13px; }
+
+        .footer { text-align:center; padding:20px 0; border-top:1px solid #1a1a2e; color:#555; font-size:13px; }
+        @media(max-width:700px){ .settings-wrapper{grid-template-columns:1fr;} .settings-sidebar{flex-direction:row;flex-wrap:wrap;} .header{flex-direction:column;gap:14px;} .search-bar{margin:0;} }
+    </style>
+</head>
+<body>
+<div class="hex-grid"></div>
+<div id="save-banner" data-i18n="set.saved">✓ Settings saved!</div>
+
+<div class="main-container">
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">Hearts of Minecraft</div>
+        <div class="search-bar">
+            <input type="text" id="globalSearch" data-i18n-placeholder="common.search" placeholder="Search...">
+        </div>
+        <nav class="nav">
+            <a href="index.html" data-i18n="nav.home">Home</a>
+            <a href="shop.html" data-i18n="nav.shop">Shop</a>
+            <a href="map.html" data-i18n="nav.map">Live Map</a>
+            <a href="stats.html" data-i18n="nav.stats">Statistics</a>
+            <a href="foryou.html" data-i18n="nav.foryou">For You</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="about.html" data-i18n="nav.about">About</a>
+            <a href="https://discord.gg/A9ZYsud9HY" style="background:#1a75ff;border-radius:5px;padding:8px 14px;" rel="noopener noreferrer" target="_blank">Discord</a>
+            <div id="nav-auth"></div>
+        </nav>
+    </header>
+
+    <div class="settings-wrapper">
+        <!-- Sidebar -->
+        <nav class="settings-sidebar">
+            <a class="sidebar-item active" onclick="showSection('language')" href="#">
+                <span class="sidebar-icon">🌐</span><span data-i18n="set.lang">Language</span>
+            </a>
+            <a class="sidebar-item" onclick="showSection('appearance')" href="#">
+                <span class="sidebar-icon">🎨</span><span data-i18n="set.appearance">Appearance</span>
+            </a>
+            <a class="sidebar-item" onclick="showSection('notifications')" href="#">
+                <span class="sidebar-icon">🔔</span><span data-i18n="set.notifs">Notifications</span>
+            </a>
+            <a class="sidebar-item" onclick="showSection('privacy')" href="#">
+                <span class="sidebar-icon">🔒</span><span data-i18n="set.privacy">Privacy</span>
+            </a>
+            <a class="sidebar-item" onclick="showSection('account')" href="#">
+                <span class="sidebar-icon">👤</span><span data-i18n="set.account">Account</span>
+            </a>
+            <a class="sidebar-item" onclick="showSection('danger')" href="#" style="margin-top:auto;">
+                <span class="sidebar-icon">⚠️</span><span data-i18n="set.danger">Danger Zone</span>
+            </a>
+        </nav>
+
+        <!-- Main content -->
+        <div class="settings-content">
+
+            <!-- ── Language ── -->
+            <div id="sec-language" class="settings-section active">
+                <h2 class="section-title" data-i18n="set.lang">Language</h2>
+                <p class="section-sub">Choose the language for the entire website.</p>
+                <div class="set-card">
+                    <div class="lang-grid" id="langGrid"></div>
+                </div>
+            </div>
+
+            <!-- ── Appearance ── -->
+            <div id="sec-appearance" class="settings-section">
+                <h2 class="section-title" data-i18n="set.appearance">Appearance</h2>
+                <p class="section-sub">Customize the look and feel of the site.</p>
+                <div class="set-card">
+                    <h3>Theme</h3>
+                    <div class="toggle-row">
+                        <div class="toggle-label">
+                            <span data-i18n="set.dark">Dark Mode</span>
+                            <small>Default and recommended for Hearts of Minecraft.</small>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="tog-dark" checked disabled>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Notifications ── -->
+            <div id="sec-notifications" class="settings-section">
+                <h2 class="section-title" data-i18n="set.notifs">Notifications</h2>
+                <p class="section-sub">Manage how and when you receive notifications.</p>
+                <div class="set-card">
+                    <h3>Notification Preferences</h3>
+                    <div class="toggle-row">
+                        <div class="toggle-label">
+                            <span data-i18n="set.notifs.enable">Enable Notifications</span>
+                            <small>Receive notifications when someone follows you or likes your posts.</small>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="tog-notifs" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-label">
+                            New blog notifications
+                            <small>Receive notifications when users you follow post new content.</small>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="tog-blog-notifs" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveSettings()"><span data-i18n="set.save">Save Changes</span></button>
+            </div>
+
+            <!-- ── Privacy ── -->
+            <div id="sec-privacy" class="settings-section">
+                <h2 class="section-title" data-i18n="set.privacy">Privacy</h2>
+                <p class="section-sub">Control who can see your profile and content.</p>
+                <div class="set-card">
+                    <h3>Visibility</h3>
+                    <div class="toggle-row">
+                        <div class="toggle-label">
+                            <span data-i18n="set.profile.public">Public Profile</span>
+                            <small>Allow anyone to view your profile and blog posts.</small>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="tog-public" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveSettings()"><span data-i18n="set.save">Save Changes</span></button>
+            </div>
+
+            <!-- ── Account ── -->
+            <div id="sec-account" class="settings-section">
+                <h2 class="section-title" data-i18n="set.account">Account</h2>
+                <p class="section-sub">Manage your profile and credentials.</p>
+
+                <!-- Profile card -->
+                <div class="set-card">
+                    <h3>Profile Picture</h3>
+                    <div class="profile-card">
+                        <img id="settingsAvatar" class="profile-card-avatar"
+                            src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'><circle cx='36' cy='36' r='36' fill='%23334'/><text x='36' y='46' text-anchor='middle' fill='%23fff' font-size='24'>?</text></svg>"
+                            alt="Avatar">
+                        <div class="profile-card-info">
+                            <h2 id="settingsUsername">Loading…</h2>
+                            <p id="settingsEmail"></p>
+                        </div>
+                    </div>
+                    <div class="file-row">
+                        <input type="file" id="avatarFile" accept="image/jpeg,image/png">
+                        <button class="btn btn-ghost" onclick="uploadAvatar()">Upload</button>
+                    </div>
+                </div>
+
+                <!-- Change password -->
+                <div class="set-card">
+                    <h3 data-i18n="set.change.pw">Change Password</h3>
+                    <div class="form-row">
+                        <label data-i18n="set.current.pw">Current Password</label>
+                        <input type="password" id="curPw" autocomplete="current-password">
+                    </div>
+                    <div class="form-row">
+                        <label data-i18n="set.new.pw">New Password</label>
+                        <input type="password" id="newPw" autocomplete="new-password" minlength="6">
+                    </div>
+                    <button class="btn btn-primary" style="margin-top:4px;" onclick="changePw()">Update Password</button>
+                    <div id="pw-msg" style="font-size:13px;margin-top:8px;"></div>
+                </div>
+            </div>
+
+            <!-- ── Danger Zone ── -->
+            <div id="sec-danger" class="settings-section">
+                <h2 class="section-title" style="color:#e74c3c;" data-i18n="set.danger">Danger Zone</h2>
+                <p class="section-sub">These actions are irreversible. Please be careful.</p>
+                <div class="danger-box">
+                    <h3 data-i18n="set.delete.acct">Delete Account</h3>
+                    <p data-i18n="set.delete.warn">This action is irreversible. All your data will be permanently deleted.</p>
+                    <button class="btn btn-danger" onclick="deleteAccount()" data-i18n="set.delete.btn">Delete My Account</button>
+                </div>
+            </div>
+
+        </div><!-- .settings-content -->
+    </div><!-- .settings-wrapper -->
+
+    <footer class="footer">
+        <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+    </footer>
+</div>
+
+<script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
+<script src="js/security.js"></script>
+<script src="js/db.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/auth-widget.js"></script>
+<script src="config.js"></script>
+<script>
+'use strict';
+
+let currentUser = null;
+
+/* ─── Section switching ──────────────────────────────────────────────────── */
+function showSection(id) {
+    document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+    const sec = document.getElementById('sec-' + id);
+    if (sec) sec.classList.add('active');
+    const sideItems = document.querySelectorAll('.sidebar-item');
+    const idx = ['language','appearance','notifications','privacy','account','danger'].indexOf(id);
+    if (sideItems[idx]) sideItems[idx].classList.add('active');
+}
+
+/* ─── Language grid ─────────────────────────────────────────────────────── */
+function buildLangGrid() {
+    const grid = document.getElementById('langGrid');
+    grid.innerHTML = '';
+    const current = i18n.getLang();
+    i18n.langs.forEach(l => {
+        const btn = document.createElement('button');
+        btn.className = 'lang-btn' + (l.code === current ? ' selected' : '');
+        btn.innerHTML = `<span class="flag">${l.flag}</span><span>${l.label}</span>`;
+        btn.onclick = () => {
+            i18n.setLang(l.code);
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            // Save to user settings if logged in
+            saveSettings();
+        };
+        grid.appendChild(btn);
+    });
+}
+
+/* ─── Save settings ─────────────────────────────────────────────────────── */
+async function saveSettings() {
+    if (!currentUser) return;
+    const user = await DB.getUser(currentUser);
+    if (!user) return;
+    user.settings = user.settings || {};
+    user.settings.language       = i18n.getLang();
+    user.settings.notifications  = document.getElementById('tog-notifs')?.checked ?? true;
+    user.settings.blogNotifs     = document.getElementById('tog-blog-notifs')?.checked ?? true;
+    user.settings.profilePublic  = document.getElementById('tog-public')?.checked ?? true;
+    await DB.saveUser(user);
+    const banner = document.getElementById('save-banner');
+    banner.textContent = i18n.t('set.saved');
+    banner.classList.add('show');
+    setTimeout(() => banner.classList.remove('show'), 2500);
+}
+
+/* ─── Upload avatar ─────────────────────────────────────────────────────── */
+async function uploadAvatar() {
+    const file = document.getElementById('avatarFile').files[0];
+    if (!file) { alert('Select an image first.'); return; }
+    if (file.size > 2 * 1024 * 1024) { alert('Image must be under 2 MB.'); return; }
+    const dataUrl = await new Promise(res => {
+        const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(file);
+    });
+    const user = await DB.getUser(currentUser);
+    if (user) {
+        user.profilePic = dataUrl;
+        await DB.saveUser(user);
+        document.getElementById('settingsAvatar').src = dataUrl;
+        const banner = document.getElementById('save-banner');
+        banner.textContent = '✓ Profile picture updated!';
+        banner.classList.add('show');
+        setTimeout(() => banner.classList.remove('show'), 2500);
+    }
+}
+
+/* ─── Change password ───────────────────────────────────────────────────── */
+async function changePw() {
+    const cur = document.getElementById('curPw').value;
+    const nw  = document.getElementById('newPw').value;
+    const msg = document.getElementById('pw-msg');
+    if (!cur || !nw) { msg.style.color='#e74c3c'; msg.textContent='Fill in both fields.'; return; }
+    if (nw.length < 6) { msg.style.color='#e74c3c'; msg.textContent='New password must be at least 6 characters.'; return; }
+    const curHash = await security.hashPassword(cur);
+    const user    = await DB.getUser(currentUser);
+    if (!user || (user.password !== curHash && user.password !== cur)) {
+        msg.style.color='#e74c3c'; msg.textContent='Current password is incorrect.'; return;
+    }
+    user.password = await security.hashPassword(nw);
+    await DB.saveUser(user);
+    document.getElementById('curPw').value = '';
+    document.getElementById('newPw').value = '';
+    msg.style.color='#27ae60'; msg.textContent='Password updated successfully!';
+    setTimeout(() => msg.textContent='', 3000);
+}
+
+/* ─── Delete account ─────────────────────────────────────────────────────── */
+async function deleteAccount() {
+    const conf = confirm(i18n.t('set.delete.warn') + '\n\nType DELETE to confirm.');
+    if (!conf) return;
+    const users = await DB.getUsers();
+    const filtered = users.filter(u => u.username !== currentUser);
+    await DB.saveUsers(filtered);
+    const blogs = await DB.getBlogs();
+    await DB.saveBlogs(blogs.filter(b => b.author !== currentUser));
+    await DB.clearCurrentUser();
+    alert('Your account has been deleted.');
+    window.location.href = 'index.html';
+}
+
+/* ─── Init ──────────────────────────────────────────────────────────────── */
+(async () => {
+    currentUser = await DB.getCurrentUser();
+    if (!currentUser) { window.location.href = 'login.html?next=settings.html'; return; }
+
+    buildLangGrid();
+
+    const user = await DB.getUser(currentUser);
+    if (user) {
+        // Apply saved settings
+        const s = user.settings || {};
+        if (s.language) i18n.setLang(s.language);
+        const togN = document.getElementById('tog-notifs');
+        const togB = document.getElementById('tog-blog-notifs');
+        const togP = document.getElementById('tog-public');
+        if (togN) togN.checked = s.notifications !== false;
+        if (togB) togB.checked = s.blogNotifs !== false;
+        if (togP) togP.checked = s.profilePublic !== false;
+
+        // Profile card
+        document.getElementById('settingsUsername').textContent = currentUser;
+        document.getElementById('settingsEmail').textContent = user.email || '';
+        if (user.profilePic) document.getElementById('settingsAvatar').src = user.profilePic;
+    }
+
+    i18n.apply();
+    buildLangGrid(); // rebuild after lang applied
+})();
+
+document.getElementById('globalSearch').addEventListener('keydown', async e => {
+    if (e.key === 'Enter') {
+        const term = e.target.value.trim();
+        if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
+    }
+});
+</script>
+</body>
+</html>

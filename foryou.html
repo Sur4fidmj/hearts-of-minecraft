@@ -3,394 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You - Hearts of Minecraft</title>
+    <meta name="description" content="Discover personalized blog posts from the Hearts of Minecraft community.">
+    <title>For You – Hearts of Minecraft</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
-            background-size: cover;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
-            background-size: cover;
-            z-index: -1;
-        }
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #333;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-        }
-        .search-bar {
-            flex: 1;
-            margin: 0 20px;
-        }
-        .search-bar input {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-        .nav {
-            display: flex;
-            gap: 20px;
-        }
-        .nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background 0.3s;
-            font-weight: bold;
-        }
-        .nav a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .hero {
-            text-align: center;
-            padding: 50px 0;
-        }
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-        }
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            color: #ccc;
-        }
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .cta-buttons a {
-            padding: 15px 30px;
-            background: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .cta-buttons a:hover {
-            background: #0056b3;
-        }
-        .content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 50px 0;
-        }
-        .content-block {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .content-block:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        .content-block h2 {
-            color: #fff;
-            margin-bottom: 15px;
-        }
-        .content-block p {
-            color: #ccc;
-        }
-        .blog-post { border: 1px solid #333; margin: 1rem 0; padding: 1rem; background-color: rgba(0, 0, 0, 0.5); border-radius: 8px; transition: background-color 0.3s; }
-        .blog-post:hover { background-color: rgba(0, 0, 0, 0.7); }
-        .blog-post.newspaper { column-count: 2; font-family: 'Times New Roman', serif; font-size: 14px; line-height: 1.4; }
-        .blog-post h3 { color: #fff; }
-        .blog-post p { margin: 0.5rem 0; color: #ccc; }
-        .blog-post img { max-width: 100%; height: auto; margin: 0.5rem 0; }
-        .likeBtn { -webkit-text-stroke: 1px white; color: transparent; font-size: 18px; background: none; border: none; cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 4px; transition: all 0.3s; }
-        .likeBtn:hover { background: rgba(255, 255, 255, 0.1); }
-        .likeBtn.liked { color: white; -webkit-text-stroke: none; }
-        .tags { margin: 0.5rem 0; }
-        .tag { display: inline-block; background: #444; padding: 0.2rem 0.5rem; margin: 0.2rem; border-radius: 4px; }
-        .comments { margin-top: 1rem; }
-        .comment { margin: 0.5rem 0; padding: 0.5rem; background: #333; border-radius: 4px; }
-        .search-section { background-color: rgba(0, 0, 0, 0.5); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: flex; gap: 1rem; align-items: center; }
-        .search-section input { padding: 0.5rem; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid #333; border-radius: 4px; flex: 1; }
-        .search-section select { padding: 0.5rem; background-color: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid #333; border-radius: 4px; }
-        .footer {
-            text-align: center;
-            padding: 20px 0;
-            border-top: 1px solid #333;
-            color: #ccc;
-        }
-        .hex-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
-            z-index: -2;
-        }
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .search-bar {
-                margin: 0;
-            }
-            .nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
+        body { margin:0; padding:0; font-family:'Inter',sans-serif;
+            background:url('https://media.discordapp.net/attachments/1475954657997357240/1489016606389436537/Gemini_Generated_Image_smoa5rsmoa5rsmoa.png?ex=69cee247&is=69cd90c7&hm=21043e307e8f4f2b4c366ae396286d7326e9f7df88d4a09f7f7fdb3c65ab9a55&=&format=webp&quality=lossless&width=974&height=544') no-repeat center center fixed; background-size:cover; }
+        body::before { content:''; position:fixed; inset:0; background:inherit; filter:blur(10px); transform:scale(1.05); z-index:-1; }
+        .hex-grid { position:fixed; inset:0; z-index:-2;
+            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat; }
+        .main-container { max-width:1200px; margin:0 auto; padding:20px;
+            background:rgba(0,0,0,.7); border-radius:10px; box-shadow:0 0 30px rgba(0,0,0,.7);
+            backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.1); position:relative; z-index:1; }
+        .header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; border-bottom:1px solid #333; }
+        .logo { font-size:24px; font-weight:bold; color:#fff; }
+        .search-bar { flex:1; margin:0 20px; }
+        .search-bar input { width:100%; padding:10px; border:none; border-radius:5px;
+            background:rgba(255,255,255,.1); color:#fff; box-sizing:border-box; }
+        .nav { display:flex; gap:20px; flex-wrap:wrap; }
+        .nav a { color:#fff; text-decoration:none; padding:10px 15px; border-radius:5px; transition:background .3s; font-weight:bold; }
+        .nav a:hover { background:rgba(255,255,255,.1); }
+        .hero { text-align:center; padding:50px 0; }
+        .hero h1 { font-size:48px; margin-bottom:20px; color:#fff; }
+        .hero p { font-size:18px; margin-bottom:30px; color:#ccc; }
+        .content { display:grid; grid-template-columns:1fr; gap:20px; padding:30px 0; }
+        .content-block { background:rgba(255,255,255,.1); padding:20px; border-radius:10px; }
+        .search-section { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+        .search-section input, .search-section select {
+            padding:10px; border:none; border-radius:5px;
+            background:rgba(255,255,255,.1); color:#fff; flex:1; min-width:140px; }
+        .blog-post { border:1px solid #333; margin:1rem 0; padding:1rem;
+            background:rgba(0,0,0,.5); border-radius:8px; transition:background .3s; text-align:left; }
+        .blog-post:hover { background:rgba(0,0,0,.7); }
+        .blog-post.newspaper { column-count:2; font-family:'Times New Roman',serif; font-size:14px; line-height:1.4; }
+        .blog-post h3 { color:#fff; margin:0 0 .5rem; }
+        .blog-post p { margin:.5rem 0; color:#ccc; }
+        .blog-post img { max-width:100%; height:auto; margin:.5rem 0; }
+        .tags { margin:.5rem 0; }
+        .tag { display:inline-block; background:#444; color:#fff; padding:.2rem .5rem;
+            margin:.2rem; border-radius:4px; font-size:12px; cursor:pointer; }
+        .tag:hover { background:#666; }
+        .likeBtn { font-size:18px; background:none; border:1px solid #555;
+            cursor:pointer; padding:.3rem .6rem; border-radius:4px;
+            transition:all .3s; color:#fff; margin:.2rem; }
+        .likeBtn:hover { background:rgba(255,255,255,.1); }
+        .likeBtn.liked { color:#ffcc00; border-color:#ffcc00; }
+        .comment { margin:.5rem 0; padding:.5rem; background:#333; border-radius:4px; color:#ccc; font-size:13px; }
+        .comment-form { display:flex; gap:6px; margin-top:.5rem; }
+        .comment-form textarea { flex:1; padding:.4rem; border:1px solid #444; border-radius:4px;
+            background:rgba(255,255,255,.1); color:#fff; resize:vertical; min-height:40px; box-sizing:border-box; }
+        .comment-form button { padding:.4rem .8rem; background:#0066cc; color:#fff;
+            border:none; cursor:pointer; border-radius:4px; white-space:nowrap; }
+        .profileLink { color:#66aaff; text-decoration:none; }
+        .profileLink:hover { text-decoration:underline; }
+        .footer { text-align:center; padding:20px 0; border-top:1px solid #333; color:#ccc; }
+        #feed { min-height:80px; }
+        .empty-msg { color:#aaa; text-align:center; padding:2rem; }
+        @media(max-width:768px){ .header{flex-direction:column;gap:20px;} .search-bar{margin:0;}
+            .blog-post.newspaper{column-count:1;} }
     </style>
 </head>
 <body>
-    <div class="hex-grid"></div>
-    <div class="main-container">
-        <div class="header">
-            <div class="logo">Hearts of Minecraft</div>
-            <div class="search-bar">
-                <input type="text" id="globalSearch" placeholder="Search...">
-            </div>
-            <nav class="nav">
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="map.html">Live Map</a>
-                <a href="stats.html">Statistics</a>
-                <a href="foryou.html">For You</a>
-                <a href="blog.html">Create Blog</a>
-                <a href="index.html#about">About</a>
-                <a href="https://discord.gg/A9ZYsud9HY" style="background: blue; border-radius: 5px; padding: 10px 15px;">Discord</a>
-            </nav>
+<div class="hex-grid"></div>
+<div class="main-container">
+    <header class="header">
+        <div class="logo">Hearts of Minecraft</div>
+        <div class="search-bar">
+            <input type="text" id="globalSearch" placeholder="Search...">
         </div>
-        <div class="hero">
-            <h1>For You</h1>
-            <p>Discover personalized blog posts from the Hearts of Minecraft community.</p>
-        </div>
-        <div class="content">
-            <div class="content-block">
-                <section class="search-section">
-                    <input type="text" id="blogSearch" placeholder="Search blogs...">
-                    <select id="tag-filter">
-                        <option>All Tags</option>
-                        <option>Germany</option>
-                        <option>Soviet Union</option>
-                        <option>Japan</option>
-                        <option>Italy</option>
-                        <option>France</option>
-                        <option>United Kingdom</option>
-                        <option>United States</option>
-                        <option>China</option>
-                    </select>
-                </section>
-                <section>
-                    <h2>Personalized Blog Feed</h2>
-                    <div id="feed"></div>
-                </section>
-            </div>
-        </div>
-        <div class="footer">
-            <p>© 2026 HOI4 Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+        <nav class="nav">
+            <a href="index.html" data-i18n="nav.home">Home</a>
+            <a href="shop.html" data-i18n="nav.shop">Shop</a>
+            <a href="map.html" data-i18n="nav.map">Live Map</a>
+            <a href="stats.html" data-i18n="nav.stats">Statistics</a>
+            <a href="foryou.html" data-i18n="nav.foryou">For You</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+            <a href="about.html" data-i18n="nav.about">About</a>
+            <a href="https://discord.gg/A9ZYsud9HY" style="background:#1a75ff;border-radius:5px;padding:10px 15px;">Discord</a>
+            <div id="nav-auth"></div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 data-i18n="foryou.title">For You</h1>
+        <p data-i18n="foryou.sub">Discover personalized blog posts from the Hearts of Minecraft community.</p>
+    </section>
+
+    <div class="content">
+        <div class="content-block">
+            <section class="search-section">
+                <input type="text" id="blogSearch" placeholder="Search blogs by title, content or author...">
+                <select id="tagFilter">
+                    <option value="">All Tags</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Soviet Union">Soviet Union</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Italy">Italy</option>
+                    <option value="France">France</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="China">China</option>
+                </select>
+            </section>
+            <section>
+                <h2 style="color:#fff;">Personalized Blog Feed</h2>
+                <div id="feed"></div>
+            </section>
         </div>
     </div>
-    <script>
-        const feed = document.getElementById('feed');
-        let currentUser = localStorage.getItem('currentUser');
 
-        const nations = {
-            'Germany': { tag: 'GER', color: '#808080' },
-            'Soviet Union': { tag: 'SOV', color: '#FF0000' },
-            'Japan': { tag: 'JAP', color: '#FFFF00' },
-            'Italy': { tag: 'ITA', color: '#00FF00' },
-            'France': { tag: 'FRA', color: '#0000FF' },
-            'United Kingdom': { tag: 'ENG', color: '#C8102E' },
-            'United States': { tag: 'USA', color: '#0033A0' },
-            'China': { tag: 'CHI', color: '#FFD700' }
-        };
+    <footer class="footer">
+        <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+    </footer>
+</div>
 
-        // Get opposite color
-        function getOppositeColor(hex) {
-            hex = hex.replace('#', '');
-            let r = parseInt(hex.substr(0, 2), 16);
-            let g = parseInt(hex.substr(2, 2), 16);
-            let b = parseInt(hex.substr(4, 2), 16);
-            r = 255 - r;
-            g = 255 - g;
-            b = 255 - b;
-            return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+<script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
+<script src="js/security.js"></script>
+<script src="js/db.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/auth-widget.js"></script>
+<script src="config.js"></script>
+<script>
+'use strict';
+
+const NATIONS = {
+    'Germany':        { tag:'GER', color:'#aaaaaa' },
+    'Soviet Union':   { tag:'SOV', color:'#ff6666' },
+    'Japan':          { tag:'JAP', color:'#ffff44' },
+    'Italy':          { tag:'ITA', color:'#44ff44' },
+    'France':         { tag:'FRA', color:'#6699ff' },
+    'United Kingdom': { tag:'ENG', color:'#ff4444' },
+    'United States':  { tag:'USA', color:'#4466ff' },
+    'China':          { tag:'CHI', color:'#FFD700' }
+};
+
+let currentUser = null;
+const feed = document.getElementById('feed');
+const DEFAULT_PIC = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><circle cx='15' cy='15' r='15' fill='%23333'/><text x='15' y='20' text-anchor='middle' fill='%23fff' font-size='12'>?</text></svg>";
+
+function invertColor(hex) {
+    hex = hex.replace('#','');
+    if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+    const r = 255 - parseInt(hex.slice(0,2),16);
+    const g = 255 - parseInt(hex.slice(2,4),16);
+    const b = 255 - parseInt(hex.slice(4,6),16);
+    return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+async function loadFeed() {
+    const users     = await DB.getUsers();
+    const user      = users.find(u => u.username === currentUser);
+    const likedTags = user ? (user.likedTags || []) : [];
+
+    let blogs = (await DB.getBlogs()).filter(b =>
+        !b.private && (!b.publishTime || new Date(b.publishTime) <= new Date())
+    );
+
+    const searchTerm = document.getElementById('blogSearch').value.trim().toLowerCase();
+    if (searchTerm) {
+        blogs = blogs.filter(b =>
+            b.title.toLowerCase().includes(searchTerm) ||
+            b.content.toLowerCase().includes(searchTerm) ||
+            (b.author||'').toLowerCase().includes(searchTerm)
+        );
+    }
+
+    const tagFilter = document.getElementById('tagFilter').value;
+    if (tagFilter) {
+        blogs = blogs.filter(b => b.tags && b.tags.includes(tagFilter));
+    }
+
+    blogs.forEach(b => {
+        b._score = 0;
+        if (b.tags) b.tags.forEach(t => { if (likedTags.includes(t)) b._score++; });
+        if (b.seoFriendly) b._score += 5;
+    });
+    blogs.sort((a,b) => b._score - a._score || new Date(b.date) - new Date(a.date));
+
+    feed.innerHTML = '';
+    if (!blogs.length) {
+        feed.innerHTML = '<p class="empty-msg">No blog posts found.</p>';
+        return;
+    }
+
+    for (const blog of blogs) {
+        const authorUser = users.find(u => u.username === blog.author);
+        const liked      = user && (user.likedBlogs||[]).includes(blog.id);
+        const likeCount  = users.filter(u => (u.likedBlogs||[]).includes(blog.id)).length;
+
+        const post = document.createElement('div');
+        post.className = 'blog-post' + (blog.format === 'newspaper' ? ' newspaper' : '');
+        if (blog.bgColor && blog.bgColor !== '#000000') {
+            post.style.backgroundColor = blog.bgColor;
+            post.style.color = invertColor(blog.bgColor);
         }
 
-        // Save users
-        function saveUsers(users) {
-            localStorage.setItem('users', JSON.stringify(users));
+        const h3 = document.createElement('h3');
+        h3.textContent = blog.title;
+        post.appendChild(h3);
+
+        const authorDiv = document.createElement('p');
+        const pic = document.createElement('img');
+        pic.src = (authorUser && authorUser.profilePic) ? authorUser.profilePic : DEFAULT_PIC;
+        pic.style.cssText = 'width:24px;height:24px;border-radius:50%;margin-right:5px;vertical-align:middle;object-fit:cover;';
+        pic.alt = '';
+        authorDiv.appendChild(pic);
+
+        const link = document.createElement('a');
+        link.href = 'profile.html?user=' + security.encodeParam(blog.author);
+        link.className = 'profileLink';
+        security.setSafeDisplayName(link, blog.author, authorUser ? authorUser.nation : null, NATIONS);
+        authorDiv.appendChild(link);
+
+        const dateEl = document.createElement('span');
+        dateEl.style.cssText = 'color:#999;font-size:12px;margin-left:8px;';
+        dateEl.textContent = new Date(blog.date).toLocaleString();
+        authorDiv.appendChild(dateEl);
+        post.appendChild(authorDiv);
+
+        const contentDiv = document.createElement('div');
+        contentDiv.innerHTML = security.sanitizeBlogHTML(blog.content);
+        contentDiv.style.margin = '8px 0';
+        post.appendChild(contentDiv);
+
+        if (blog.image && blog.image.startsWith('data:image/')) {
+            const img = document.createElement('img');
+            img.src = blog.image;
+            img.alt = 'Blog image';
+            post.appendChild(img);
         }
 
-        // Load blogs
-        function getBlogs() {
-            return JSON.parse(localStorage.getItem('blogs') || '[]');
-        }
-
-        // Get profile pic
-        function getProfilePic(username) {
-            const users = getUsers();
-            const user = users.find(u => u.username === username);
-            return user && user.profilePic ? user.profilePic : 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="%23333"/><text x="15" y="20" text-anchor="middle" fill="%23fff" font-size="12">?</text></svg>';
-        }
-
-        // Get display name with nation tag
-        function getDisplayName(username) {
-            const users = getUsers();
-            const user = users.find(u => u.username === username);
-            if (user && user.nation && nations[user.nation]) {
-                const { tag, color } = nations[user.nation];
-                return `${username} <span style="color: ${color}">[${tag}]</span>`;
-            }
-            return username;
-        }
-
-        // Load feed
-        function loadFeed() {
-            let blogs = getBlogs().filter(b => !b.private && (!b.publishTime || new Date(b.publishTime) <= new Date()));
-            let searchTerm = localStorage.getItem('searchTerm');
-            if (searchTerm) {
-                blogs = blogs.filter(b => b.title.toLowerCase().includes(searchTerm.toLowerCase()) || b.content.toLowerCase().includes(searchTerm.toLowerCase()));
-                localStorage.removeItem('searchTerm');
-            }
-            const users = getUsers();
-            const user = users.find(u => u.username === currentUser);
-            const likedTags = user ? user.likedTags || [] : [];
-
-            // Score blogs
-            blogs.forEach(blog => {
-                blog.score = 0;
-                if (blog.tags) {
-                    blog.tags.forEach(tag => {
-                        if (likedTags.includes(tag)) blog.score += 1;
-                    });
-                }
-                blog.score += blog.seoFriendly ? 5 : 0;
+        if (blog.tags && blog.tags.length) {
+            const tagsDiv = document.createElement('div');
+            tagsDiv.className = 'tags';
+            blog.tags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = 'tag';
+                span.textContent = t;
+                span.title = 'Filter by ' + t;
+                span.onclick = () => {
+                    document.getElementById('tagFilter').value = t;
+                    loadFeed();
+                };
+                tagsDiv.appendChild(span);
             });
-
-            // Sort by score desc, then date desc
-            blogs.sort((a, b) => b.score - a.score || new Date(b.date) - new Date(a.date));
-
-            feed.innerHTML = '';
-            blogs.forEach(blog => {
-                blog.likes = users.filter(u => u.likedBlogs && u.likedBlogs.includes(blog.id)).length;
-                const post = document.createElement('div');
-                post.className = `blog-post ${blog.format || ''}`;
-                const liked = user && user.likedBlogs && user.likedBlogs.includes(blog.id);
-                const bgStyle = blog.bgColor ? `background-color: ${blog.bgColor}; color: ${getOppositeColor(blog.bgColor)};` : '';
-                post.innerHTML = `<h3>${blog.title}</h3><p><strong><img src="${getProfilePic(blog.author)}" style="width:30px; height:30px; border-radius:50%; margin-right:5px; vertical-align:middle; object-fit: cover;" alt="Profile pic"><a href="profile.html?user=${blog.author}" class="profileLink">${getDisplayName(blog.author)}</a></strong></p><p>Posted on ${new Date(blog.date).toLocaleString()}</p><div>${blog.content}</div>${blog.image ? `<img src="${blog.image}" alt="Blog image">` : ''}<div class="tags">${blog.tags ? blog.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}</div><button class="likeBtn ${liked ? 'liked' : ''}" data-id="${blog.id}">👍 (${blog.likes})</button><div class="comments">${blog.comments ? blog.comments.map(c => `<div class="comment"><strong>${getDisplayName(c.author)}:</strong> ${c.text}</div>`).join('') : ''}</div>${currentUser ? `<div><textarea id="comment${blog.id}" placeholder="Add a comment..."></textarea><button onclick="addComment('${blog.id}')">Comment</button></div>` : ''}`;
-                if (bgStyle) post.style.cssText = bgStyle;
-            });
-
-            // Add event listeners
-            document.querySelectorAll('.likeBtn').forEach(btn => {
-                btn.onclick = () => toggleLike(btn.dataset.id);
-            });
+            post.appendChild(tagsDiv);
         }
 
-        // Toggle like
-        function toggleLike(blogId) {
-            if (!currentUser) {
-                alert('Please log in to like blogs');
-                return;
-            }
-            const users = getUsers();
-            const user = users.find(u => u.username === currentUser);
-            if (!user) return;
-            if (!user.likedBlogs) user.likedBlogs = [];
-            const index = user.likedBlogs.indexOf(blogId);
-            const blogs = getBlogs();
-            const blog = blogs.find(b => b.id == blogId);
-            if (index > -1) {
-                user.likedBlogs.splice(index, 1);
-                // Remove tags from likedTags
-                if (blog.tags) {
-                    blog.tags.forEach(tag => {
-                        const tagIndex = user.likedTags.indexOf(tag);
-                        if (tagIndex > -1) user.likedTags.splice(tagIndex, 1);
-                    });
-                }
-            } else {
-                user.likedBlogs.push(blogId);
-                // Add tags to likedTags
-                if (!user.likedTags) user.likedTags = [];
-                if (blog.tags) {
-                    blog.tags.forEach(tag => {
-                        if (!user.likedTags.includes(tag)) user.likedTags.push(tag);
-                    });
-                }
-            }
-            saveUsers(users);
-            loadFeed();
-        }
+        const likeBtn = document.createElement('button');
+        likeBtn.className = 'likeBtn' + (liked ? ' liked' : '');
+        likeBtn.textContent = `👍 ${likeCount}`;
+        likeBtn.onclick = () => toggleLike(blog.id, likeBtn);
+        post.appendChild(likeBtn);
 
-        // Add comment
-        function addComment(blogId) {
-            const text = document.getElementById(`comment${blogId}`).value.trim();
-            if (text) {
-                const blogs = getBlogs();
-                const blog = blogs.find(b => b.id == blogId);
-                if (!blog.comments) blog.comments = [];
-                blog.comments.push({ author: currentUser, text });
-                localStorage.setItem('blogs', JSON.stringify(blogs));
-                loadFeed();
-            }
-        }
-
-        // Initial load
-        loadFeed();
-    </script>
-    <script>
-        document.getElementById('globalSearch').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                localStorage.setItem('searchTerm', this.value);
-                window.location = 'foryou.html';
-            }
+        const commentsDiv = document.createElement('div');
+        (blog.comments || []).forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'comment';
+            const authorSpan = document.createElement('strong');
+            const cu = users.find(u => u.username === c.author);
+            security.setSafeDisplayName(authorSpan, c.author, cu ? cu.nation : null, NATIONS);
+            div.appendChild(authorSpan);
+            div.appendChild(document.createTextNode(': ' + c.text));
+            commentsDiv.appendChild(div);
         });
-        document.getElementById('blogSearch').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                localStorage.setItem('searchTerm', this.value);
-                loadFeed();
-            }
+        post.appendChild(commentsDiv);
+
+        if (currentUser) {
+            const commentForm = document.createElement('div');
+            commentForm.className = 'comment-form';
+            const ta = document.createElement('textarea');
+            ta.placeholder = 'Add a comment…';
+            ta.maxLength = 500;
+            const btn = document.createElement('button');
+            btn.textContent = 'Comment';
+            btn.onclick = () => addComment(blog.id, ta);
+            commentForm.appendChild(ta);
+            commentForm.appendChild(btn);
+            post.appendChild(commentForm);
+        }
+
+        feed.appendChild(post);
+    }
+}
+
+async function toggleLike(blogId, btn) {
+    if (!currentUser) { alert('Please log in to like posts.'); return; }
+    const users = await DB.getUsers();
+    const me    = users.find(u => u.username === currentUser);
+    if (!me) return;
+    me.likedBlogs = me.likedBlogs || [];
+    me.likedTags  = me.likedTags  || [];
+
+    const blogs = await DB.getBlogs();
+    const blog  = blogs.find(b => b.id === blogId);
+    const idx   = me.likedBlogs.indexOf(blogId);
+
+    if (idx > -1) {
+        me.likedBlogs.splice(idx, 1);
+        if (blog && blog.tags) blog.tags.forEach(t => {
+            const ti = me.likedTags.indexOf(t);
+            if (ti > -1) me.likedTags.splice(ti, 1);
         });
-    </script>
+    } else {
+        me.likedBlogs.push(blogId);
+        if (blog && blog.tags) blog.tags.forEach(t => {
+            if (!me.likedTags.includes(t)) me.likedTags.push(t);
+        });
+    }
+    await DB.saveUsers(users);
+    await loadFeed();
+}
+
+async function addComment(blogId, textarea) {
+    if (!currentUser) return;
+    const text = textarea.value.trim();
+    if (!text) return;
+    if (text.length > 500) { alert('Comment too long (max 500 chars).'); return; }
+    const blogs = await DB.getBlogs();
+    const blog  = blogs.find(b => b.id === blogId);
+    if (!blog) return;
+    blog.comments = blog.comments || [];
+    blog.comments.push({ author: currentUser, text: security.escapeHTML(text) });
+    await DB.saveBlogs(blogs);
+    textarea.value = '';
+    await loadFeed();
+}
+
+document.getElementById('blogSearch').addEventListener('input', loadFeed);
+document.getElementById('tagFilter').addEventListener('change', loadFeed);
+
+document.getElementById('globalSearch').addEventListener('keydown', async e => {
+    if (e.key === 'Enter') {
+        const term = e.target.value.trim();
+        if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
+    }
+});
+
+(async () => {
+    currentUser = await DB.getCurrentUser();
+    const term = await DB.getSearchTerm();
+    if (term) {
+        document.getElementById('blogSearch').value = term;
+        await DB.clearSearchTerm();
+    }
+    await loadFeed();
+})();
+</script>
 </body>
 </html>

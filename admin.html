@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Hearts of Minecraft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .admin-layout { display:grid; grid-template-columns:220px 1fr; gap:0; min-height:calc(100vh - 60px); }
+        .sidebar { background:rgba(10,12,15,.9); border-right:1px solid var(--border); padding:24px 0; position:sticky; top:60px; height:calc(100vh - 60px); overflow-y:auto; }
+        .sidebar-logo { font-family:'Cinzel',serif; font-size:13px; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; padding:0 20px 20px; border-bottom:1px solid var(--border); margin-bottom:12px; }
+        .sidebar-nav a { display:flex; align-items:center; gap:10px; padding:10px 20px; color:var(--muted); font-size:14px; text-decoration:none; transition:all .2s; border-left:2px solid transparent; }
+        .sidebar-nav a:hover { color:var(--text); background:var(--surface); }
+        .sidebar-nav a.active { color:var(--gold); background:rgba(201,168,76,.08); border-left-color:var(--gold); }
+        .sidebar-nav .sep { height:1px; background:var(--border); margin:8px 20px; }
+        .admin-content { padding:32px; overflow-y:auto; }
+        .section { display:none; animation:fadeUp .25s ease; }
+        .section.active { display:block; }
+        .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:28px; }
+        .stat-box { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; text-align:center; }
+        .stat-box .stat-val { font-family:'Cinzel',serif; font-size:32px; color:var(--gold); }
+        .stat-box .stat-lbl { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-top:4px; }
+        .data-table { width:100%; border-collapse:collapse; font-size:14px; }
+        .data-table th { padding:10px 14px; text-align:left; font-family:'Cinzel',serif; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); border-bottom:1px solid var(--border); }
+        .data-table td { padding:10px 14px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
+        .data-table tr:hover td { background:var(--surface); }
+        .badge { display:inline-block; padding:2px 10px; border-radius:20px; font-size:11px; text-transform:uppercase; letter-spacing:.06em; }
+        .badge-green { background:rgba(39,174,96,.15); color:#2ecc71; border:1px solid rgba(39,174,96,.25); }
+        .badge-red { background:rgba(192,57,43,.15); color:#e74c3c; border:1px solid rgba(192,57,43,.25); }
+        .badge-gold { background:rgba(201,168,76,.15); color:var(--gold); border:1px solid rgba(201,168,76,.25); }
+        .badge-grey { background:var(--surface2); color:var(--muted); border:1px solid var(--border); }
+        .action-btns { display:flex; gap:6px; flex-wrap:wrap; }
+        .btn-xs { padding:4px 10px; font-size:11px; border-radius:6px; border:none; cursor:pointer; font-family:'Cinzel',serif; letter-spacing:.05em; transition:all .2s; }
+        .btn-xs-danger { background:rgba(192,57,43,.2); color:#e74c3c; }
+        .btn-xs-danger:hover { background:rgba(192,57,43,.4); }
+        .btn-xs-success { background:rgba(39,174,96,.2); color:#2ecc71; }
+        .btn-xs-success:hover { background:rgba(39,174,96,.4); }
+        .btn-xs-gold { background:rgba(201,168,76,.2); color:var(--gold); }
+        .btn-xs-gold:hover { background:rgba(201,168,76,.4); }
+        .btn-xs-grey { background:var(--surface2); color:var(--muted); }
+        .btn-xs-grey:hover { background:var(--surface); color:var(--text); }
+        .search-input { background:var(--surface); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:8px 14px; font-size:14px; outline:none; width:280px; margin-bottom:16px; transition:border-color .2s; }
+        .search-input:focus { border-color:var(--gold); }
+        .search-input::placeholder { color:var(--muted); }
+        .log-entry { padding:10px 14px; border-bottom:1px solid rgba(255,255,255,.04); font-size:13px; display:flex; gap:12px; align-items:flex-start; }
+        .log-entry:hover { background:var(--surface); }
+        .log-time { color:var(--muted); white-space:nowrap; font-size:12px; min-width:130px; }
+        .log-type { min-width:100px; }
+        .log-msg { color:#b8b4ac; flex:1; }
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:200; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+        .modal-overlay.open { display:flex; }
+        .modal { background:#111318; border:1px solid var(--border2); border-radius:var(--radius); padding:28px; width:100%; max-width:480px; animation:fadeUp .2s ease; }
+        .modal h3 { font-family:'Cinzel',serif; color:var(--gold); margin-bottom:16px; }
+        .modal-actions { display:flex; gap:10px; margin-top:20px; justify-content:flex-end; }
+        .access-denied { text-align:center; padding:80px 0; color:var(--muted); }
+        .access-denied .icon { font-size:64px; margin-bottom:16px; }
+        .tabs-row { display:flex; gap:4px; margin-bottom:24px; border-bottom:1px solid var(--border); }
+        .tab-btn { padding:10px 18px; background:none; border:none; color:var(--muted); font-family:'Cinzel',serif; font-size:12px; letter-spacing:.07em; cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; margin-bottom:-1px; }
+        .tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+        .tab-btn:hover:not(.active) { color:var(--text); }
+        @media(max-width:768px){ .admin-layout{grid-template-columns:1fr;} .sidebar{position:static;height:auto;} }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <a class="logo" href="index.html">⚔ Hearts of Minecraft</a>
+    <div class="nav-links">
+        <a href="index.html">Home</a><a href="blog.html">Blog</a>
+        <a href="foryou.html">For You</a><a href="stats.html">Stats</a>
+    </div>
+    <div class="nav-search"><input type="text" id="globalSearch" placeholder="Search…"></div>
+</nav>
+
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">🛡️ Admin Panel</div>
+        <nav class="sidebar-nav" id="sidebarNav">
+            <a href="#" class="active" data-section="dashboard">📊 Dashboard</a>
+            <a href="#" data-section="users">👥 Users</a>
+            <a href="#" data-section="blogs">📝 Blogs</a>
+            <div class="sep"></div>
+            <a href="#" data-section="logs">📋 Activity Log</a>
+        </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="admin-content" id="adminContent">
+        <div id="accessDenied" class="access-denied" style="display:none;">
+            <div class="icon">🔒</div>
+            <h2 style="font-family:'Cinzel',serif;color:var(--gold);">Access Denied</h2>
+            <p style="margin-top:8px;">You need admin privileges to view this page.</p>
+            <a href="blog.html" class="btn btn-primary" style="margin-top:20px;">← Back to Blog</a>
+        </div>
+
+        <!-- Dashboard -->
+        <section class="section active" id="sectionDashboard">
+            <h2 class="page-title" style="text-align:left;font-size:26px;margin-bottom:28px;">Dashboard</h2>
+            <div class="stat-grid" id="statsGrid"></div>
+            <div class="card">
+                <div class="card-title">Recent Activity</div>
+                <div id="recentActivity"></div>
+            </div>
+        </section>
+
+        <!-- Users -->
+        <section class="section" id="sectionUsers">
+            <h2 class="page-title" style="text-align:left;font-size:26px;margin-bottom:28px;">User Management</h2>
+            <input type="text" class="search-input" id="userSearch" placeholder="Search users…">
+            <div class="card" style="padding:0;overflow:hidden;">
+                <table class="data-table" id="usersTable">
+                    <thead><tr>
+                        <th>User</th><th>Nation</th><th>Joined</th>
+                        <th>Followers</th><th>Blogs</th><th>Status</th><th>Actions</th>
+                    </tr></thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Blogs -->
+        <section class="section" id="sectionBlogs">
+            <h2 class="page-title" style="text-align:left;font-size:26px;margin-bottom:28px;">Blog Moderation</h2>
+            <input type="text" class="search-input" id="blogSearch" placeholder="Search blogs…">
+            <div class="card" style="padding:0;overflow:hidden;">
+                <table class="data-table" id="blogsTable">
+                    <thead><tr>
+                        <th>Title</th><th>Author</th><th>Date</th>
+                        <th>Tags</th><th>Visibility</th><th>Actions</th>
+                    </tr></thead>
+                    <tbody id="blogsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Logs -->
+        <section class="section" id="sectionLogs">
+            <h2 class="page-title" style="text-align:left;font-size:26px;margin-bottom:28px;">Activity Log</h2>
+            <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+                <input type="text" class="search-input" id="logSearch" placeholder="Filter logs…" style="margin-bottom:0;">
+                <select id="logTypeFilter" style="background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 12px;font-size:14px;outline:none;">
+                    <option value="">All types</option>
+                    <option value="signup">Signup</option>
+                    <option value="login">Login</option>
+                    <option value="logout">Logout</option>
+                    <option value="loginFailed">Login Failed</option>
+                    <option value="blogPublished">Blog Published</option>
+                    <option value="blogDeleted">Blog Deleted</option>
+                    <option value="adminAction">Admin Action</option>
+                </select>
+                <button class="btn btn-ghost" id="clearLogsBtn" style="font-size:12px;padding:8px 14px;">🗑️ Clear Logs</button>
+            </div>
+            <div class="card" style="padding:0;overflow:hidden;" id="logsContainer"></div>
+        </section>
+    </main>
+</div>
+
+<!-- Ban Modal -->
+<div class="modal-overlay" id="banModal">
+    <div class="modal">
+        <h3>Ban User</h3>
+        <p style="color:var(--muted);margin-bottom:16px;">You are about to ban <strong id="banTargetName" style="color:var(--gold);"></strong>.</p>
+        <div class="field"><label>Reason (optional)</label><input type="text" id="banReason" placeholder="e.g. Rule violation, spam…"></div>
+        <div class="modal-actions">
+            <button class="btn btn-ghost" id="banCancelBtn">Cancel</button>
+            <button class="btn btn-danger" id="banConfirmBtn">Ban User</button>
+        </div>
+    </div>
+</div>
+
+<script src="config.js"></script>
+<script src="db.js"></script>
+<script src="security.js"></script>
+<script>
+'use strict';
+
+const NATIONS = {
+    'Germany':       { tag:'GER', color:'#aaaaaa' },
+    'Soviet Union':  { tag:'SOV', color:'#ff6666' },
+    'Japan':         { tag:'JAP', color:'#ffff44' },
+    'Italy':         { tag:'ITA', color:'#77ee77' },
+    'France':        { tag:'FRA', color:'#6699ff' },
+    'United Kingdom':{ tag:'ENG', color:'#ff7777' },
+    'United States': { tag:'USA', color:'#6688ff' },
+    'China':         { tag:'CHI', color:'#FFD700' },
+};
+
+const LOG_COLORS = { signup:'badge-green', login:'badge-gold', logout:'badge-grey',
+    loginFailed:'badge-red', blogPublished:'badge-gold', blogDeleted:'badge-red', adminAction:'badge-gold' };
+
+let currentUser = null;
+let isAdmin = false;
+let banTargetUsername = null;
+
+// ── Check admin ───────────────────────────────────────────────────────────────
+async function checkAdmin() {
+    currentUser = await DB.getCurrentUser();
+    if (!currentUser) { showAccessDenied(); return; }
+    const users = await DB.getUsers();
+    const user  = users.find(u => u.username === currentUser);
+    const cfg   = window.HOM_CONFIG || {};
+    isAdmin = user && (user.isAdmin || (cfg.DEFAULT_ADMINS||[]).includes(currentUser));
+    if (!isAdmin || (user && user.banned)) { showAccessDenied(); return; }
+    document.getElementById('accessDenied').style.display = 'none';
+    await loadDashboard();
+}
+
+function showAccessDenied() {
+    document.getElementById('accessDenied').style.display = 'block';
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+}
+
+// ── Sidebar navigation ────────────────────────────────────────────────────────
+document.querySelectorAll('#sidebarNav a[data-section]').forEach(link => {
+    link.addEventListener('click', async e => {
+        e.preventDefault();
+        document.querySelectorAll('#sidebarNav a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+        const sec = link.dataset.section;
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById('section' + sec.charAt(0).toUpperCase() + sec.slice(1)).classList.add('active');
+        if (sec === 'dashboard') await loadDashboard();
+        else if (sec === 'users') await loadUsers();
+        else if (sec === 'blogs') await loadBlogs();
+        else if (sec === 'logs')  await loadLogs();
+    });
+});
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+async function loadDashboard() {
+    const users = await DB.getUsers();
+    const blogs = await DB.getBlogs();
+    const logs  = await DB.getLogs();
+    const active = users.filter(u => !u.banned).length;
+    const banned = users.filter(u => u.banned).length;
+    const admins = users.filter(u => u.isAdmin).length;
+    const stats = [
+        { val: users.length, lbl: 'Total Users' },
+        { val: active,       lbl: 'Active Users' },
+        { val: banned,       lbl: 'Banned Users' },
+        { val: admins,       lbl: 'Admins' },
+        { val: blogs.length, lbl: 'Total Blogs' },
+        { val: blogs.filter(b=>b.private).length, lbl: 'Private Blogs' },
+    ];
+    document.getElementById('statsGrid').innerHTML = stats.map(s =>
+        `<div class="stat-box"><div class="stat-val">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div>`
+    ).join('');
+
+    const recent = logs.slice(0,10);
+    const ra = document.getElementById('recentActivity');
+    if (!recent.length) { ra.innerHTML='<p style="color:var(--muted);padding:16px;">No activity yet.</p>'; return; }
+    ra.innerHTML = recent.map(l => `
+        <div class="log-entry">
+            <span class="log-time">${new Date(l.ts).toLocaleString()}</span>
+            <span class="log-type"><span class="badge ${LOG_COLORS[l.type]||'badge-grey'}">${l.type}</span></span>
+            <span class="log-msg">${logMessage(l)}</span>
+        </div>`).join('');
+}
+
+function logMessage(l) {
+    const u = security.escapeHTML(l.username||'—');
+    if (l.type==='signup') return `New user registered: <strong>${u}</strong>`;
+    if (l.type==='login') return `<strong>${u}</strong> signed in`;
+    if (l.type==='logout') return `<strong>${u}</strong> signed out`;
+    if (l.type==='loginFailed') return `Failed login attempt for <strong>${u}</strong> (${l.attempts} attempt${l.attempts>1?'s':''})`;
+    if (l.type==='blogPublished') return `<strong>${u}</strong> published: ${security.escapeHTML(l.title||'—')}`;
+    if (l.type==='blogDeleted') return `<strong>${u}</strong> deleted: ${security.escapeHTML(l.title||'—')}`;
+    if (l.type==='adminAction') return security.escapeHTML(l.message||'Admin action');
+    return JSON.stringify(l);
+}
+
+// ── Users ─────────────────────────────────────────────────────────────────────
+async function loadUsers(filter='') {
+    const users = await DB.getUsers();
+    const blogs = await DB.getBlogs();
+    const tbody = document.getElementById('usersTableBody');
+    const filtered = filter ? users.filter(u => u.username.toLowerCase().includes(filter.toLowerCase()) || (u.email||'').toLowerCase().includes(filter.toLowerCase())) : users;
+
+    tbody.innerHTML = '';
+    filtered.forEach(user => {
+        const blogCount = blogs.filter(b=>b.author===user.username).length;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <img src="${user.profilePic||defaultPicSrc()}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="">
+                    <div>
+                        <div style="font-weight:600;">${security.escapeHTML(user.username)}</div>
+                        <div style="font-size:11px;color:var(--muted);">${security.escapeHTML(user.email||'—')}</div>
+                    </div>
+                </div>
+            </td>
+            <td>${user.nation ? `<span class="badge badge-grey">${security.escapeHTML(user.nation)}</span>` : '—'}</td>
+            <td style="font-size:12px;color:var(--muted);">${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}</td>
+            <td>${(user.followers||[]).length}</td>
+            <td>${blogCount}</td>
+            <td>${user.banned ? '<span class="badge badge-red">Banned</span>' : user.isAdmin ? '<span class="badge badge-gold">Admin</span>' : '<span class="badge badge-green">Active</span>'}</td>
+            <td class="action-btns">
+                ${user.banned
+                    ? `<button class="btn-xs btn-xs-success" onclick="unbanUser('${security.escapeHTML(user.username)}')">Unban</button>`
+                    : `<button class="btn-xs btn-xs-danger" onclick="openBanModal('${security.escapeHTML(user.username)}')">Ban</button>`}
+                ${!user.isAdmin && !user.banned
+                    ? `<button class="btn-xs btn-xs-gold" onclick="promoteUser('${security.escapeHTML(user.username)}')">Make Admin</button>`
+                    : user.isAdmin && user.username !== currentUser
+                        ? `<button class="btn-xs btn-xs-grey" onclick="demoteUser('${security.escapeHTML(user.username)}')">Remove Admin</button>`
+                        : ''}
+            </td>`;
+        tbody.appendChild(tr);
+    });
+    if (!filtered.length) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">No users found.</td></tr>';
+}
+
+function defaultPicSrc() {
+    return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='14' fill='%23333'/%3E%3Ctext x='14' y='18' text-anchor='middle' fill='%23888' font-size='10'%3E%3F%3C/text%3E%3C/svg%3E";
+}
+
+document.getElementById('userSearch').addEventListener('input', e => loadUsers(e.target.value));
+
+// Ban modal
+function openBanModal(username) { banTargetUsername=username; document.getElementById('banTargetName').textContent=username; document.getElementById('banReason').value=''; document.getElementById('banModal').classList.add('open'); }
+document.getElementById('banCancelBtn').addEventListener('click', ()=>document.getElementById('banModal').classList.remove('open'));
+document.getElementById('banConfirmBtn').addEventListener('click', async()=>{
+    if(!banTargetUsername) return;
+    const reason=document.getElementById('banReason').value.trim();
+    await banUser(banTargetUsername, reason);
+    document.getElementById('banModal').classList.remove('open');
+});
+
+async function banUser(username, reason) {
+    const users=await DB.getUsers(), user=users.find(u=>u.username===username);
+    if(!user)return;
+    user.banned=true; user.banReason=reason||'No reason given';
+    await DB.saveUsers(users);
+    await security.discordLog('ban',{Admin:currentUser,Target:username,Reason:reason||'—',Time:new Date().toLocaleString()});
+    await DB.appendLog({type:'adminAction',username:currentUser,message:`Banned user: ${username}. Reason: ${reason||'—'}`});
+    await loadUsers(document.getElementById('userSearch').value);
+}
+
+async function unbanUser(username) {
+    const users=await DB.getUsers(),user=users.find(u=>u.username===username);
+    if(!user)return;
+    user.banned=false; user.banReason=null;
+    await DB.saveUsers(users);
+    await security.discordLog('unban',{Admin:currentUser,Target:username,Time:new Date().toLocaleString()});
+    await DB.appendLog({type:'adminAction',username:currentUser,message:`Unbanned user: ${username}`});
+    await loadUsers(document.getElementById('userSearch').value);
+}
+
+async function promoteUser(username) {
+    if(!confirm(`Promote ${username} to admin?`)) return;
+    const users=await DB.getUsers(),user=users.find(u=>u.username===username);
+    if(!user)return; user.isAdmin=true; await DB.saveUsers(users);
+    await security.discordLog('adminAction',{Admin:currentUser,Action:`Promoted ${username} to admin`,Time:new Date().toLocaleString()});
+    await DB.appendLog({type:'adminAction',username:currentUser,message:`Promoted ${username} to admin`});
+    await loadUsers(document.getElementById('userSearch').value);
+}
+
+async function demoteUser(username) {
+    if(!confirm(`Remove admin from ${username}?`)) return;
+    const users=await DB.getUsers(),user=users.find(u=>u.username===username);
+    if(!user)return; user.isAdmin=false; await DB.saveUsers(users);
+    await DB.appendLog({type:'adminAction',username:currentUser,message:`Removed admin from ${username}`});
+    await loadUsers(document.getElementById('userSearch').value);
+}
+
+// ── Blogs ─────────────────────────────────────────────────────────────────────
+async function loadBlogs(filter='') {
+    const blogs=(await DB.getBlogs()).sort((a,b)=>new Date(b.date)-new Date(a.date));
+    const tbody=document.getElementById('blogsTableBody');
+    const filtered=filter?blogs.filter(b=>b.title.toLowerCase().includes(filter.toLowerCase())||(b.author||'').toLowerCase().includes(filter.toLowerCase())):blogs;
+    tbody.innerHTML='';
+    filtered.forEach(blog=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`
+            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${security.escapeHTML(blog.title)}">${security.escapeHTML(blog.title)}</td>
+            <td><a href="profile.html?user=${security.encodeParam(blog.author)}" style="color:var(--gold);text-decoration:none;">${security.escapeHTML(blog.author)}</a></td>
+            <td style="font-size:12px;color:var(--muted);">${new Date(blog.date).toLocaleDateString()}</td>
+            <td style="font-size:12px;">${blog.tags?blog.tags.slice(0,3).map(t=>`<span class="badge badge-grey">${security.escapeHTML(t)}</span>`).join(' '):'—'}</td>
+            <td>${blog.private?'<span class="badge badge-grey">Private</span>':'<span class="badge badge-green">Public</span>'}</td>
+            <td><button class="btn-xs btn-xs-danger" onclick="adminDeleteBlog(${blog.id},'${security.escapeHTML(blog.title).replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">Delete</button></td>`;
+        tbody.appendChild(tr);
+    });
+    if(!filtered.length) tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">No blogs found.</td></tr>';
+}
+
+async function adminDeleteBlog(id, title) {
+    if(!confirm(`Delete blog "${title}"?`)) return;
+    const blogs=await DB.getBlogs();
+    await DB.saveBlogs(blogs.filter(b=>b.id!==id));
+    await security.discordLog('blogDeleted',{Admin:currentUser,Title:title,Time:new Date().toLocaleString()});
+    await DB.appendLog({type:'adminAction',username:currentUser,message:`Admin deleted blog: ${title}`});
+    await loadBlogs(document.getElementById('blogSearch').value);
+}
+
+document.getElementById('blogSearch').addEventListener('input', e => loadBlogs(e.target.value));
+
+// ── Logs ──────────────────────────────────────────────────────────────────────
+async function loadLogs() {
+    const logs=await DB.getLogs();
+    renderLogs(logs);
+}
+
+function renderLogs(logs) {
+    const container=document.getElementById('logsContainer');
+    const search=document.getElementById('logSearch').value.toLowerCase();
+    const typeFilter=document.getElementById('logTypeFilter').value;
+    const filtered=logs.filter(l=>{
+        if(typeFilter&&l.type!==typeFilter) return false;
+        if(search&&!JSON.stringify(l).toLowerCase().includes(search)) return false;
+        return true;
+    });
+    if(!filtered.length){container.innerHTML='<p style="color:var(--muted);padding:24px;text-align:center;">No log entries.</p>';return;}
+    container.innerHTML=filtered.map(l=>`
+        <div class="log-entry">
+            <span class="log-time">${new Date(l.ts).toLocaleString()}</span>
+            <span class="log-type"><span class="badge ${LOG_COLORS[l.type]||'badge-grey'}">${l.type}</span></span>
+            <span class="log-msg">${logMessage(l)}</span>
+        </div>`).join('');
+}
+
+let _allLogs = [];
+document.getElementById('logSearch').addEventListener('input', ()=>renderLogs(_allLogs));
+document.getElementById('logTypeFilter').addEventListener('change', ()=>renderLogs(_allLogs));
+document.getElementById('clearLogsBtn').addEventListener('click', async()=>{
+    if(!confirm('Clear all activity logs?')) return;
+    await DB.set('activityLog',[]);
+    _allLogs=[];
+    renderLogs([]);
+});
+
+const origLoadLogs = loadLogs;
+window.loadLogs = async function() {
+    _allLogs = await DB.getLogs();
+    renderLogs(_allLogs);
+};
+
+// ── Global search ─────────────────────────────────────────────────────────────
+document.getElementById('globalSearch').addEventListener('keypress', async e => {
+    if(e.key==='Enter'){await DB.setSearchTerm(e.target.value.trim());window.location.href='foryou.html';}
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+checkAdmin();
+</script>
+</body>
+</html>
