@@ -1,102 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Live world map — track faction territories and player locations in real-time on Hearts of Minecraft.">
+    <meta name="description"
+        content="Live world map — track faction territories and player locations in real-time on Hearts of Minecraft.">
     <title>Live Map – Hearts of Minecraft</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            margin:0; padding:0; font-family:'Inter',sans-serif;
-            background:url('https://media.discordapp.net/attachments/1475954657997357240/1489016606389436537/Gemini_Generated_Image_smoa5rsmoa5rsmoa.png?ex=69cee247&is=69cd90c7&hm=21043e307e8f4f2b4c366ae396286d7326e9f7df88d4a09f7f7fdb3c65ab9a55&=&format=webp&quality=lossless&width=974&height=544') no-repeat center center fixed;
-            background-size:cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: url('https://i.imgur.com/CGlI7au.png') no-repeat center center fixed;
+            background-size: cover;
         }
+
         body::before {
-            content:''; position:fixed; inset:0; background:inherit;
-            filter:blur(10px); transform:scale(1.05); z-index:-1;
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(10px);
+            transform: scale(1.05);
+            z-index: -1;
         }
-        .hex-grid { position:fixed; inset:0; z-index:-2;
-            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat; }
+
+        .hex-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+        }
+
         .main-container {
-            max-width:1200px; margin:0 auto; padding:20px;
-            background:rgba(0,0,0,.8); border-radius:10px;
-            box-shadow:0 0 30px rgba(0,0,0,.7);
-            backdrop-filter:blur(10px);
-            border:1px solid rgba(255,255,255,.1);
-            position:relative; z-index:1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, .8);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, .1);
+            position: relative;
+            z-index: 1;
         }
-        .header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; border-bottom:1px solid #333; }
-        .logo { font-size:24px; font-weight:bold; color:#fff; }
-        .search-bar { flex:1; margin:0 20px; }
-        .search-bar input { width:100%; padding:10px; border:none; border-radius:5px;
-            background:rgba(255,255,255,.1); color:#fff; box-sizing:border-box; }
-        .nav { display:flex; gap:20px; flex-wrap:wrap; }
-        .nav a { color:#fff; text-decoration:none; padding:10px 15px; border-radius:5px; transition:background .3s; font-weight:bold; }
-        .nav a:hover { background:rgba(255,255,255,.1); }
-        .hero { text-align:center; padding:50px 0; }
-        .hero h1 { font-size:48px; margin-bottom:20px; color:#fff; }
-        .hero p { font-size:18px; margin-bottom:30px; color:#ccc; }
-        .content { display:grid; grid-template-columns:1fr; gap:20px; padding:30px 0; }
-        .content-block { background:rgba(255,255,255,.1); padding:20px; border-radius:10px; text-align:center; }
-        .content-block h2 { color:#fff; margin-bottom:15px; }
-        iframe { width:100%; height:80vh; border:none; border-radius:8px; }
-        .footer { text-align:center; padding:20px 0; border-top:1px solid #333; color:#ccc; }
-        @media(max-width:768px){ .header{flex-direction:column;gap:20px;} .search-bar{margin:0;} .nav{flex-wrap:wrap;justify-content:center;} iframe{height:60vh;} }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background .3s;
+            font-weight: bold;
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 30px 0;
+        }
+
+        .content-block {
+            background: rgba(255, 255, 255, .1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .content-block h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 80vh;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+
+        @media(max-width:768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .search-bar {
+                margin: 0;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            iframe {
+                height: 60vh;
+            }
+        }
     </style>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M5MC976G');</script>
+    <!-- End Google Tag Manager -->
 </head>
+
 <body>
-<div class="hex-grid"></div>
-<div class="main-container">
-    <header class="header">
-        <div class="logo">Hearts of Minecraft</div>
-        <div class="search-bar">
-            <input type="text" id="globalSearch" placeholder="Search...">
-        </div>
-        <nav class="nav">
-            <a href="index.html" data-i18n="nav.home">Home</a>
-            <a href="shop.html" data-i18n="nav.shop">Shop</a>
-            <a href="map.html" data-i18n="nav.map">Live Map</a>
-            <a href="stats.html" data-i18n="nav.stats">Statistics</a>
-            <a href="foryou.html" data-i18n="nav.foryou">For You</a>
-            <a href="blog.html" data-i18n="nav.blog">Blog</a>
-            <a href="about.html" data-i18n="nav.about">About</a>
-            <a href="https://discord.gg/A9ZYsud9HY" style="background:#1a75ff;border-radius:5px;padding:10px 15px;" rel="noopener noreferrer" target="_blank">Discord</a>
-            <div id="nav-auth"></div>
-        </nav>
-    </header>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5MC976G" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="hex-grid"></div>
+    <div class="main-container">
+        <header class="header">
+            <div class="logo">Hearts of Minecraft</div>
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="Search...">
+            </div>
+            <nav class="nav">
+                <a href="index.html" data-i18n="nav.home">Home</a>
+                <a href="shop.html" data-i18n="nav.shop">Shop</a>
+                <a href="map.html" data-i18n="nav.map">Live Map</a>
+                <a href="stats.html" data-i18n="nav.stats">Statistics</a>
+                <a href="foryou.html" data-i18n="nav.foryou">For You</a>
+                <a href="blog.html" data-i18n="nav.blog">Blog</a>
+                <a href="about.html" data-i18n="nav.about">About</a>
+                <a href="https://discord.gg/A9ZYsud9HY" style="background:#1a75ff;border-radius:5px;padding:10px 15px;"
+                    rel="noopener noreferrer" target="_blank">Discord</a>
+                <div id="nav-auth"></div>
+            </nav>
+        </header>
 
-    <section class="hero">
-        <h1>Live Map</h1>
-        <p>Track faction territories, player locations, and strategic points in real-time.</p>
-    </section>
+        <section class="hero">
+            <h1>Live Map</h1>
+            <p>Track faction territories, player locations, and strategic points in real-time.</p>
+        </section>
 
-    <div class="content">
-        <div class="content-block">
-            <h2>Interactive World Map</h2>
-            <iframe src="https://map.heartsofminecraft.com/" title="Hearts of Minecraft Live World Map" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+        <div class="content">
+            <div class="content-block">
+                <h2>Interactive World Map</h2>
+                <iframe src="https://map.heartsofminecraft.com/" title="Hearts of Minecraft Live World Map"
+                    loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
         </div>
+
+        <footer class="footer">
+            <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+        </footer>
     </div>
 
-    <footer class="footer">
-        <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
-    </footer>
-</div>
 
-<script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
-<script src="js/security.js"></script>
-<script src="js/db.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/auth-widget.js"></script>
-<script src="config.js"></script>
-<script>
-'use strict';
-document.getElementById('globalSearch').addEventListener('keydown', async function (e) {
-    if (e.key === 'Enter') {
-        const term = this.value.trim();
-        if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
-    }
-});
-</script>
+    <script src="js/security.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/auth-widget.js"></script>
+    <script src="config.js"></script>
+    <script>
+        'use strict';
+        document.getElementById('globalSearch').addEventListener('keydown', async function (e) {
+            if (e.key === 'Enter') {
+                const term = this.value.trim();
+                if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
+            }
+        });
+    </script>
 </body>
+
 </html>

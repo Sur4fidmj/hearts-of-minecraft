@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,229 +9,443 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { margin:0; padding:0; font-family:'Inter',sans-serif;
-            background:url('https://media.discordapp.net/attachments/1475954657997357240/1489016606389436537/Gemini_Generated_Image_smoa5rsmoa5rsmoa.png?ex=69cee247&is=69cd90c7&hm=21043e307e8f4f2b4c366ae396286d7326e9f7df88d4a09f7f7fdb3c65ab9a55&=&format=webp&quality=lossless&width=974&height=544') no-repeat center center fixed; background-size:cover; }
-        body::before { content:''; position:fixed; inset:0; background:inherit; filter:blur(10px); transform:scale(1.05); z-index:-1; }
-        .hex-grid { position:fixed; inset:0; z-index:-2;
-            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat; }
-        .main-container { max-width:1200px; margin:0 auto; padding:20px;
-            background:rgba(0,0,0,.7); border-radius:10px; box-shadow:0 0 30px rgba(0,0,0,.7);
-            backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.1); position:relative; z-index:1; }
-        .header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; border-bottom:1px solid #333; }
-        .logo { font-size:24px; font-weight:bold; color:#fff; }
-        .search-bar { flex:1; margin:0 20px; }
-        .search-bar input { width:100%; padding:10px; border:none; border-radius:5px;
-            background:rgba(255,255,255,.1); color:#fff; box-sizing:border-box; }
-        .nav { display:flex; gap:20px; flex-wrap:wrap; }
-        .nav a { color:#fff; text-decoration:none; padding:10px 15px; border-radius:5px; transition:background .3s; font-weight:bold; }
-        .nav a:hover { background:rgba(255,255,255,.1); }
-        .hero { text-align:center; padding:50px 0; }
-        .hero h1 { font-size:48px; margin-bottom:20px; color:#fff; }
-        .hero p { font-size:18px; margin-bottom:30px; color:#ccc; }
-        .content { display:grid; grid-template-columns:1fr; gap:20px; padding:30px 0; }
-        .content-block { background:rgba(255,255,255,.1); padding:20px; border-radius:10px; }
-        .stats { display:flex; flex-wrap:wrap; gap:1rem; }
-        .stat { flex:1; min-width:180px; background:rgba(0,0,0,.5); padding:1rem;
-            border:1px solid #333; border-radius:8px; transition:background .3s; }
-        .stat:hover { background:rgba(0,0,0,.7); }
-        .stat h3 { margin-top:0; color:#66aaff; font-size:13px; text-transform:uppercase; }
-        .stat p  { color:#fff; font-size:18px; font-weight:bold; margin:0; }
-        .list { background:rgba(0,0,0,.5); padding:1rem; color:#fff; border:1px solid #333;
-            margin-bottom:1rem; border-radius:8px; }
-        .list h3 { margin-top:0; color:#66aaff; }
-        .list ul { list-style:none; padding:0; margin:0; }
-        .list li { padding:.5rem 0; border-bottom:1px solid #333; color:#ddd; }
-        .list li:last-child { border-bottom:none; }
-        label { color:#fff; }
-        select { background:rgba(255,255,255,.1); color:#fff; border:1px solid #444;
-            padding:.3rem .6rem; border-radius:4px; margin-left:8px; }
-        .footer { text-align:center; padding:20px 0; border-top:1px solid #333; color:#ccc; }
-        canvas { margin-top:12px; }
-        @media(max-width:768px){ .header{flex-direction:column;gap:20px;} .search-bar{margin:0;} }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: url('https://i.imgur.com/CGlI7au.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(10px);
+            transform: scale(1.05);
+            z-index: -1;
+        }
+
+        .hex-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, .7);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, .1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background .3s;
+            font-weight: bold;
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 30px 0;
+        }
+
+        .content-block {
+            background: rgba(255, 255, 255, .1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stat {
+            flex: 1;
+            min-width: 180px;
+            background: rgba(0, 0, 0, .5);
+            padding: 1rem;
+            border: 1px solid #333;
+            border-radius: 8px;
+            transition: background .3s;
+        }
+
+        .stat:hover {
+            background: rgba(0, 0, 0, .7);
+        }
+
+        .stat h3 {
+            margin-top: 0;
+            color: #66aaff;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .stat p {
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .list {
+            background: rgba(0, 0, 0, .5);
+            padding: 1rem;
+            color: #fff;
+            border: 1px solid #333;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+
+        .list h3 {
+            margin-top: 0;
+            color: #66aaff;
+        }
+
+        .list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .list li {
+            padding: .5rem 0;
+            border-bottom: 1px solid #333;
+            color: #ddd;
+        }
+
+        .list li:last-child {
+            border-bottom: none;
+        }
+
+        label {
+            color: #fff;
+        }
+
+        select {
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            border: 1px solid #444;
+            padding: .3rem .6rem;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+
+        canvas {
+            margin-top: 12px;
+        }
+
+        @media(max-width:768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .search-bar {
+                margin: 0;
+            }
+        }
     </style>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M5MC976G');</script>
+    <!-- End Google Tag Manager -->
 </head>
+
 <body>
-<div class="hex-grid"></div>
-<div class="main-container">
-    <header class="header">
-        <div class="logo">Hearts of Minecraft</div>
-        <div class="search-bar">
-            <input type="text" id="globalSearch" placeholder="Search...">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5MC976G" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="hex-grid"></div>
+    <div class="main-container">
+        <header class="header">
+            <div class="logo">Hearts of Minecraft</div>
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="Search...">
+            </div>
+            <nav class="nav">
+                <a href="index.html" data-i18n="nav.home">Home</a>
+                <a href="shop.html" data-i18n="nav.shop">Shop</a>
+                <a href="map.html" data-i18n="nav.map">Live Map</a>
+                <a href="stats.html" data-i18n="nav.stats">Statistics</a>
+                <a href="foryou.html" data-i18n="nav.foryou">For You</a>
+                <a href="blog.html" data-i18n="nav.blog">Blog</a>
+                <a href="about.html" data-i18n="nav.about">About</a>
+                <a href="https://discord.gg/A9ZYsud9HY"
+                    style="background:#1a75ff;border-radius:5px;padding:10px 15px;">Discord</a>
+                <div id="nav-auth"></div>
+            </nav>
+        </header>
+
+        <section class="hero">
+            <h1>Statistics</h1>
+            <p>Real-time server metrics and player activity tracking</p>
+        </section>
+
+        <div class="content">
+            <div class="content-block">
+
+                <div class="stats">
+                    <div class="stat">
+                        <h3>Total Uptime</h3>
+                        <p>46d 5h 56m</p>
+                    </div>
+                    <div class="stat">
+                        <h3>Current Session</h3>
+                        <p>8h 52m</p>
+                    </div>
+                    <div class="stat">
+                        <h3>Avg Players (7d)</h3>
+                        <p>5.46</p>
+                    </div>
+                    <div class="stat">
+                        <h3>Peak Players</h3>
+                        <p>33</p>
+                    </div>
+                    <div class="stat">
+                        <h3>Total Sessions</h3>
+                        <p>497</p>
+                    </div>
+                    <div class="stat">
+                        <h3>First Launch</h3>
+                        <p>2/13/2026</p>
+                    </div>
+                </div>
+
+                <br>
+
+                <div class="list">
+                    <h3>🟢 Currently Online</h3>
+                    <p id="onlineCount" style="color:#aaa;">Loading…</p>
+                    <ul id="onlineList">
+                        <li style="color:#777;">Fetching player list…</li>
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <h3>🏆 Most Active Players</h3>
+                    <ul>
+                        <li>1. Agent_melon14 — 14d 4h 46m · 538 sessions · last seen 3h ago</li>
+                        <li>2. DamageIn — 10d 14h 59m · 354 sessions · last seen 4h ago</li>
+                        <li>3. Ali_dinocraft — 10d 13h 38m · 301 sessions · last seen 5d ago</li>
+                        <li>4. Gabbertjuh — 9d 18h 43m · 243 sessions · last seen 47m ago</li>
+                        <li>5. Goldfuchs1 — 9d 10h 40m · 415 sessions · last seen 1d ago</li>
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <h3>💀 Top Killers</h3>
+                    <ul>
+                        <li>1. Agent_melon14 — K/D 4.87 · 297 kills · 61 deaths</li>
+                        <li>2. ultragamer06 — K/D 3.65 · 157 kills · 43 deaths</li>
+                        <li>3. slobloblob — K/D 0.45 · 97 kills · 214 deaths</li>
+                        <li>4. Minek12345 — K/D 0.71 · 66 kills · 93 deaths</li>
+                        <li>5. Duckwarrior900 — K/D 1.10 · 55 kills · 50 deaths</li>
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <h3>📈 Player Count Over Time</h3>
+                    <label for="timeRange">Time Range:</label>
+                    <select id="timeRange">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30">Last 30 Days</option>
+                        <option value="90" selected>Last 90 Days</option>
+                    </select>
+                    <canvas id="playerChart"></canvas>
+                </div>
+
+            </div>
         </div>
-        <nav class="nav">
-            <a href="index.html" data-i18n="nav.home">Home</a>
-            <a href="shop.html" data-i18n="nav.shop">Shop</a>
-            <a href="map.html" data-i18n="nav.map">Live Map</a>
-            <a href="stats.html" data-i18n="nav.stats">Statistics</a>
-            <a href="foryou.html" data-i18n="nav.foryou">For You</a>
-            <a href="blog.html" data-i18n="nav.blog">Blog</a>
-            <a href="about.html" data-i18n="nav.about">About</a>
-            <a href="https://discord.gg/A9ZYsud9HY" style="background:#1a75ff;border-radius:5px;padding:10px 15px;">Discord</a>
-            <div id="nav-auth"></div>
-        </nav>
-    </header>
 
-    <section class="hero">
-        <h1>Statistics</h1>
-        <p>Real-time server metrics and player activity tracking</p>
-    </section>
-
-    <div class="content">
-        <div class="content-block">
-
-            <div class="stats">
-                <div class="stat"><h3>Total Uptime</h3><p>46d 5h 56m</p></div>
-                <div class="stat"><h3>Current Session</h3><p>8h 52m</p></div>
-                <div class="stat"><h3>Avg Players (7d)</h3><p>5.46</p></div>
-                <div class="stat"><h3>Peak Players</h3><p>33</p></div>
-                <div class="stat"><h3>Total Sessions</h3><p>497</p></div>
-                <div class="stat"><h3>First Launch</h3><p>2/13/2026</p></div>
-            </div>
-
-            <br>
-
-            <div class="list">
-                <h3>🟢 Currently Online</h3>
-                <p id="onlineCount" style="color:#aaa;">Loading…</p>
-                <ul id="onlineList"><li style="color:#777;">Fetching player list…</li></ul>
-            </div>
-
-            <div class="list">
-                <h3>🏆 Most Active Players</h3>
-                <ul>
-                    <li>1. Agent_melon14 — 14d 4h 46m · 538 sessions · last seen 3h ago</li>
-                    <li>2. DamageIn — 10d 14h 59m · 354 sessions · last seen 4h ago</li>
-                    <li>3. Ali_dinocraft — 10d 13h 38m · 301 sessions · last seen 5d ago</li>
-                    <li>4. Gabbertjuh — 9d 18h 43m · 243 sessions · last seen 47m ago</li>
-                    <li>5. Goldfuchs1 — 9d 10h 40m · 415 sessions · last seen 1d ago</li>
-                </ul>
-            </div>
-
-            <div class="list">
-                <h3>💀 Top Killers</h3>
-                <ul>
-                    <li>1. Agent_melon14 — K/D 4.87 · 297 kills · 61 deaths</li>
-                    <li>2. ultragamer06 — K/D 3.65 · 157 kills · 43 deaths</li>
-                    <li>3. slobloblob — K/D 0.45 · 97 kills · 214 deaths</li>
-                    <li>4. Minek12345 — K/D 0.71 · 66 kills · 93 deaths</li>
-                    <li>5. Duckwarrior900 — K/D 1.10 · 55 kills · 50 deaths</li>
-                </ul>
-            </div>
-
-            <div class="list">
-                <h3>📈 Player Count Over Time</h3>
-                <label for="timeRange">Time Range:</label>
-                <select id="timeRange">
-                    <option value="7">Last 7 Days</option>
-                    <option value="30">Last 30 Days</option>
-                    <option value="90" selected>Last 90 Days</option>
-                </select>
-                <canvas id="playerChart"></canvas>
-            </div>
-
-        </div>
+        <footer class="footer">
+            <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+        </footer>
     </div>
 
-    <footer class="footer">
-        <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
-    </footer>
-</div>
 
-<script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
-<script src="js/security.js"></script>
-<script src="js/db.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/auth-widget.js"></script>
-<script src="config.js"></script>
-<script>
-'use strict';
+    <script src="js/security.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/auth-widget.js"></script>
+    <script src="config.js"></script>
+    <script>
+        'use strict';
 
-/* ─── Online players via MC server API ─────────────────────────────────── */
-const onlineCount = document.getElementById('onlineCount');
-const onlineList  = document.getElementById('onlineList');
+        /* ─── Online players via MC server API ─────────────────────────────────── */
+        const onlineCount = document.getElementById('onlineCount');
+        const onlineList = document.getElementById('onlineList');
 
-async function loadStats() {
-    try {
-        const ctrl = new AbortController();
-        const timer = setTimeout(() => ctrl.abort(), 8000);
-        const res   = await fetch('https://api.mcsrvstat.us/2/play.heartsofminecraft.com', { signal: ctrl.signal });
-        clearTimeout(timer);
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-        if (data.online) {
-            onlineCount.textContent = `${data.players.online} / ${data.players.max} players online`;
-            onlineList.innerHTML = data.players.list && data.players.list.length
-                ? data.players.list.map(name => `<li>🎮 ${security.escapeHTML(name)}</li>`).join('')
-                : '<li style="color:#777;">No players online right now.</li>';
-        } else {
-            onlineCount.textContent = 'Server offline';
-            onlineList.innerHTML = '<li style="color:#777;">Server is currently offline.</li>';
+        async function loadStats() {
+            try {
+                const ctrl = new AbortController();
+                const timer = setTimeout(() => ctrl.abort(), 8000);
+                const res = await fetch('https://api.mcsrvstat.us/2/play.heartsofminecraft.com', { signal: ctrl.signal });
+                clearTimeout(timer);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                if (data.online) {
+                    onlineCount.textContent = `${data.players.online} / ${data.players.max} players online`;
+                    onlineList.innerHTML = data.players.list && data.players.list.length
+                        ? data.players.list.map(name => `<li>🎮 ${security.escapeHTML(name)}</li>`).join('')
+                        : '<li style="color:#777;">No players online right now.</li>';
+                } else {
+                    onlineCount.textContent = 'Server offline';
+                    onlineList.innerHTML = '<li style="color:#777;">Server is currently offline.</li>';
+                }
+            } catch (err) {
+                if (err.name === 'AbortError') {
+                    onlineCount.textContent = 'Request timed out.';
+                } else {
+                    onlineCount.textContent = 'Could not reach server API.';
+                }
+                onlineList.innerHTML = '<li style="color:#777;">Unable to load player list.</li>';
+            }
         }
-    } catch (err) {
-        if (err.name === 'AbortError') {
-            onlineCount.textContent = 'Request timed out.';
-        } else {
-            onlineCount.textContent = 'Could not reach server API.';
+
+        loadStats();
+        setInterval(loadStats, 15000);
+
+        /* ─── Chart ─────────────────────────────────────────────────────────────── */
+        const ctx = document.getElementById('playerChart').getContext('2d');
+        const playerChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [], datasets: [{
+                    label: 'Players Online',
+                    data: [],
+                    borderColor: '#66aaff',
+                    backgroundColor: 'rgba(102,170,255,0.15)',
+                    fill: true, pointRadius: 3, pointHoverRadius: 7,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'nearest', intersect: false },
+                scales: {
+                    x: { ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,.05)' } },
+                    y: { beginAtZero: true, ticks: { color: '#aaa' }, grid: { color: 'rgba(255,255,255,.05)' } }
+                },
+                plugins: { legend: { labels: { color: '#fff' } } }
+            }
+        });
+
+        function generateData(days) {
+            const labels = [], data = [], now = new Date();
+            for (let i = days - 1; i >= 0; i--) {
+                const d = new Date(now);
+                d.setDate(now.getDate() - i);
+                labels.push(d.toISOString().split('T')[0]);
+                const seed = d.getDate() + d.getMonth() * 31;
+                data.push(Math.round(3 + ((seed * 17 + 7) % 18)));
+            }
+            return { labels, data };
         }
-        onlineList.innerHTML = '<li style="color:#777;">Unable to load player list.</li>';
-    }
-}
 
-loadStats();
-setInterval(loadStats, 15000);
+        function updateChart(days) {
+            const { labels, data } = generateData(days);
+            playerChart.data.labels = labels;
+            playerChart.data.datasets[0].data = data;
+            playerChart.update();
+        }
 
-/* ─── Chart ─────────────────────────────────────────────────────────────── */
-const ctx = document.getElementById('playerChart').getContext('2d');
-const playerChart = new Chart(ctx, {
-    type: 'line',
-    data: { labels:[], datasets:[{
-        label: 'Players Online',
-        data: [],
-        borderColor: '#66aaff',
-        backgroundColor: 'rgba(102,170,255,0.15)',
-        fill: true, pointRadius: 3, pointHoverRadius: 7,
-        tension: 0.3
-    }]},
-    options: {
-        responsive: true,
-        interaction: { mode:'nearest', intersect:false },
-        scales: {
-            x: { ticks:{ color:'#aaa' }, grid:{ color:'rgba(255,255,255,.05)' } },
-            y: { beginAtZero:true, ticks:{ color:'#aaa' }, grid:{ color:'rgba(255,255,255,.05)' } }
-        },
-        plugins: { legend:{ labels:{ color:'#fff' } } }
-    }
-});
+        document.getElementById('timeRange').addEventListener('change', e => updateChart(parseInt(e.target.value, 10)));
+        updateChart(90);
 
-function generateData(days) {
-    const labels = [], data = [], now = new Date();
-    for (let i = days - 1; i >= 0; i--) {
-        const d = new Date(now);
-        d.setDate(now.getDate() - i);
-        labels.push(d.toISOString().split('T')[0]);
-        const seed = d.getDate() + d.getMonth() * 31;
-        data.push(Math.round(3 + ((seed * 17 + 7) % 18)));
-    }
-    return { labels, data };
-}
-
-function updateChart(days) {
-    const { labels, data } = generateData(days);
-    playerChart.data.labels = labels;
-    playerChart.data.datasets[0].data = data;
-    playerChart.update();
-}
-
-document.getElementById('timeRange').addEventListener('change', e => updateChart(parseInt(e.target.value, 10)));
-updateChart(90);
-
-/* ─── Global search ─────────────────────────────────────────────────────── */
-document.getElementById('globalSearch').addEventListener('keydown', async e => {
-    if (e.key === 'Enter') {
-        const term = e.target.value.trim();
-        if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
-    }
-});
-</script>
+        /* ─── Global search ─────────────────────────────────────────────────────── */
+        document.getElementById('globalSearch').addEventListener('keydown', async e => {
+            if (e.key === 'Enter') {
+                const term = e.target.value.trim();
+                if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
+            }
+        });
+    </script>
 </body>
+
 </html>

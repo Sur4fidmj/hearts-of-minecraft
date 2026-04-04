@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,157 +9,305 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            margin:0; padding:0; font-family:'Inter',sans-serif;
-            background:url('https://media.discordapp.net/attachments/1475954657997357240/1489016606389436537/Gemini_Generated_Image_smoa5rsmoa5rsmoa.png?ex=69cee247&is=69cd90c7&hm=21043e307e8f4f2b4c366ae396286d7326e9f7df88d4a09f7f7fdb3c65ab9a55&=&format=webp&quality=lossless&width=974&height=544') no-repeat center center fixed;
-            background-size:cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: url('https://i.imgur.com/CGlI7au.png') no-repeat center center fixed;
+            background-size: cover;
         }
+
         body::before {
-            content:''; position:fixed; inset:0; background:inherit;
-            filter:blur(10px); transform:scale(1.05); z-index:-1;
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(10px);
+            transform: scale(1.05);
+            z-index: -1;
         }
-        .hex-grid { position:fixed; inset:0; z-index:-2;
-            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat; }
+
+        .hex-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+        }
+
         .main-container {
-            max-width:1200px; margin:0 auto; padding:20px;
-            background:rgba(0,0,0,.7); border-radius:10px;
-            box-shadow:0 0 30px rgba(0,0,0,.7);
-            backdrop-filter:blur(10px);
-            border:1px solid rgba(255,255,255,.1);
-            position:relative; z-index:1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, .7);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, .1);
+            position: relative;
+            z-index: 1;
         }
-        .header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; border-bottom:1px solid #333; }
-        .logo { font-size:24px; font-weight:bold; color:#fff; }
-        .search-bar { flex:1; margin:0 20px; }
-        .search-bar input { width:100%; padding:10px; border:none; border-radius:5px;
-            background:rgba(255,255,255,.1); color:#fff; box-sizing:border-box; }
-        .nav { display:flex; gap:20px; flex-wrap:wrap; }
-        .nav a { color:#fff; text-decoration:none; padding:10px 15px; border-radius:5px; transition:background .3s; font-weight:bold; }
-        .nav a:hover { background:rgba(255,255,255,.1); }
-        .hero { text-align:center; padding:50px 0; }
-        .hero h1 { font-size:48px; margin-bottom:20px; color:#fff; }
-        .hero p { font-size:18px; margin-bottom:30px; color:#ccc; }
-        .content { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; padding:30px 0; }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background .3s;
+            font-weight: bold;
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 30px 0;
+        }
+
         .content-block {
-            background:rgba(255,255,255,.1); padding:20px; border-radius:10px;
-            text-align:center; transition:transform .3s, box-shadow .3s;
+            background: rgba(255, 255, 255, .1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform .3s, box-shadow .3s;
         }
-        .content-block:hover { transform:translateY(-8px); box-shadow:0 10px 20px rgba(0,0,0,.3); }
-        .content-block h2 { color:#fff; margin-bottom:15px; }
-        .content-block p { color:#ccc; text-align:left; }
+
+        .content-block:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .3);
+        }
+
+        .content-block h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .content-block p {
+            color: #ccc;
+            text-align: left;
+        }
+
         .content-block a {
-            display:inline-block; margin-top:12px; padding:12px 24px;
-            background:#0066cc; color:#fff; text-decoration:none;
-            border-radius:5px; transition:background .3s; font-weight:bold;
+            display: inline-block;
+            margin-top: 12px;
+            padding: 12px 24px;
+            background: #0066cc;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background .3s;
+            font-weight: bold;
         }
-        .content-block a:hover { background:#004499; }
-        .footer { text-align:center; padding:20px 0; border-top:1px solid #333; color:#ccc; }
-        @media(max-width:768px){ .header{flex-direction:column;gap:20px;} .search-bar{margin:0;} .nav{flex-wrap:wrap;justify-content:center;} }
+
+        .content-block a:hover {
+            background: #004499;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+
+        @media(max-width:768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .search-bar {
+                margin: 0;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
     </style>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M5MC976G');</script>
+    <!-- End Google Tag Manager -->
 </head>
+
 <body>
-<div class="hex-grid"></div>
-<div class="main-container">
-    <header class="header">
-        <div class="logo">Hearts of Minecraft</div>
-        <div class="search-bar">
-            <input type="text" id="globalSearch" placeholder="Search...">
-        </div>
-        <nav class="nav">
-            <a href="index.html" data-i18n="nav.home">Home</a>
-            <a href="shop.html" data-i18n="nav.shop">Shop</a>
-            <a href="map.html" data-i18n="nav.map">Live Map</a>
-            <a href="stats.html" data-i18n="nav.stats">Statistics</a>
-            <a href="foryou.html" data-i18n="nav.foryou">For You</a>
-            <a href="blog.html" data-i18n="nav.blog">Blog</a>
-            <a href="about.html" data-i18n="nav.about">About</a>
-            <a href="https://discord.gg/A9ZYsud9HY" style="background:#1a75ff;border-radius:5px;padding:10px 15px;">Discord</a>
-            <div id="nav-auth"></div>
-        </nav>
-    </header>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5MC976G" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="hex-grid"></div>
+    <div class="main-container">
+        <header class="header">
+            <div class="logo">Hearts of Minecraft</div>
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="Search...">
+            </div>
+            <nav class="nav">
+                <a href="index.html" data-i18n="nav.home">Home</a>
+                <a href="shop.html" data-i18n="nav.shop">Shop</a>
+                <a href="map.html" data-i18n="nav.map">Live Map</a>
+                <a href="stats.html" data-i18n="nav.stats">Statistics</a>
+                <a href="foryou.html" data-i18n="nav.foryou">For You</a>
+                <a href="blog.html" data-i18n="nav.blog">Blog</a>
+                <a href="about.html" data-i18n="nav.about">About</a>
+                <a href="https://discord.gg/A9ZYsud9HY"
+                    style="background:#1a75ff;border-radius:5px;padding:10px 15px;">Discord</a>
+                <div id="nav-auth"></div>
+            </nav>
+        </header>
 
-    <section class="hero">
-        <h1>Shop</h1>
-        <p>Support the server and get exclusive perks, ranks, and features!</p>
-    </section>
+        <section class="hero">
+            <h1>Shop</h1>
+            <p>Support the server and get exclusive perks, ranks, and features!</p>
+        </section>
 
-    <div class="content">
-        <div class="content-block">
-            <h2>🎖️ VIP Rank — $4.99/mo</h2>
-            <p>
-                3 homes + normal queue access<br>
-                Custom nametags in Minecraft + Discord<br>
-                Priority queue<br>
-                /kit [stone tools, 16 steak] — 12h cooldown<br>
-                /feed — 3h cooldown<br>
-                Cancel anytime
-            </p>
-            <a href="https://hearts-of-minecraft-webshop.tebex.io/checkout/packages/add/7272287/subscribe" rel="noopener noreferrer" target="_blank">Subscribe Monthly</a>
+        <div class="content">
+            <div class="content-block">
+                <h2>🎖️ VIP Rank — $4.99/mo</h2>
+                <p>
+                    3 homes + normal queue access<br>
+                    Custom nametags in Minecraft + Discord<br>
+                    Priority queue<br>
+                    /kit [stone tools, 16 steak] — 12h cooldown<br>
+                    /feed — 3h cooldown<br>
+                    Cancel anytime
+                </p>
+                <a href="https://hearts-of-minecraft-webshop.tebex.io/checkout/packages/add/7272287/subscribe"
+                    rel="noopener noreferrer" target="_blank">Subscribe Monthly</a>
+            </div>
+
+            <div class="content-block">
+                <h2>🎖️ MVP Rank — $9.99/mo</h2>
+                <p>
+                    All VIP perks<br>
+                    MVP prefix in chat<br>
+                    Sneak peeks at future development<br>
+                    Ingame cosmetics (MVP suit)<br>
+                    +2 homes (5 total)<br>
+                    /kit [iron armor + tools, 32 steak] — 24h cooldown<br>
+                    /repair — 24h cooldown<br>
+                    /feed — 3h cooldown<br>
+                    Cancel anytime
+                </p>
+                <a href="https://hearts-of-minecraft-webshop.tebex.io/checkout/packages/add/7272289/subscribe"
+                    rel="noopener noreferrer" target="_blank">Subscribe Monthly</a>
+            </div>
+
+            <div class="content-block">
+                <h2>🎖️ LEGEND Rank — $19.99/mo</h2>
+                <p>
+                    All MVP perks<br>
+                    Glowing LEGEND prefix in chat<br>
+                    Request a feature (no guarantee)<br>
+                    Request to be in content video (3×/month)<br>
+                    Special ingame cosmetics (LEGEND suit)<br>
+                    +7 sethomes (10 total)<br>
+                    /kit [iron armor Unbr3 Prot3, diamond tools, 48 steak] — 24h cooldown<br>
+                    /repair — 12h cooldown<br>
+                    /feed — 3h cooldown<br>
+                    Cancel anytime
+                </p>
+                <a href="https://hearts-of-minecraft-webshop.tebex.io/checkout/packages/add/7272293/subscribe"
+                    rel="noopener noreferrer" target="_blank">Subscribe Monthly</a>
+            </div>
+
+            <div class="content-block">
+                <h2>💳 Payment Info</h2>
+                <p>
+                    All purchases are processed securely through Tebex.<br><br>
+                    <strong>How It Works:</strong> Click "Subscribe" → redirected to Tebex → enter details → complete
+                    payment. Perks are applied automatically.<br><br>
+                    <strong>Refund Policy:</strong> All purchases are final. No refunds for ranks or cosmetics.
+                    Subscriptions can be cancelled anytime.<br><br>
+                    <strong>Important:</strong> You must agree to server rules. No refunds for bans. The modpack is
+                    required — join Discord for the download link.
+                </p>
+            </div>
         </div>
 
-        <div class="content-block">
-            <h2>🎖️ MVP Rank — $9.99/mo</h2>
-            <p>
-                All VIP perks<br>
-                MVP prefix in chat<br>
-                Sneak peeks at future development<br>
-                Ingame cosmetics (MVP suit)<br>
-                +2 homes (5 total)<br>
-                /kit [iron armor + tools, 32 steak] — 24h cooldown<br>
-                /repair — 24h cooldown<br>
-                /feed — 3h cooldown<br>
-                Cancel anytime
-            </p>
-            <a href="https://hearts-of-minecraft-webshop.tebex.io/checkout/packages/add/7272289/subscribe" rel="noopener noreferrer" target="_blank">Subscribe Monthly</a>
-        </div>
-
-        <div class="content-block">
-            <h2>🎖️ LEGEND Rank — $19.99/mo</h2>
-            <p>
-                All MVP perks<br>
-                Glowing LEGEND prefix in chat<br>
-                Request a feature (no guarantee)<br>
-                Request to be in content video (3×/month)<br>
-                Special ingame cosmetics (LEGEND suit)<br>
-                +7 sethomes (10 total)<br>
-                /kit [iron armor Unbr3 Prot3, diamond tools, 48 steak] — 24h cooldown<br>
-                /repair — 12h cooldown<br>
-                /feed — 3h cooldown<br>
-                Cancel anytime
-            </p>
-            <a href="https://hearts-of-minecraft-webshop.tebex.io/checkout/packages/add/7272293/subscribe" rel="noopener noreferrer" target="_blank">Subscribe Monthly</a>
-        </div>
-
-        <div class="content-block">
-            <h2>💳 Payment Info</h2>
-            <p>
-                All purchases are processed securely through Tebex.<br><br>
-                <strong>How It Works:</strong> Click "Subscribe" → redirected to Tebex → enter details → complete payment. Perks are applied automatically.<br><br>
-                <strong>Refund Policy:</strong> All purchases are final. No refunds for ranks or cosmetics. Subscriptions can be cancelled anytime.<br><br>
-                <strong>Important:</strong> You must agree to server rules. No refunds for bans. The modpack is required — join Discord for the download link.
-            </p>
-        </div>
+        <footer class="footer">
+            <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+        </footer>
     </div>
 
-    <footer class="footer">
-        <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
-    </footer>
-</div>
+    <!-- Scripts must be loaded BEFORE any inline code that uses DB/security -->
 
-<!-- Scripts must be loaded BEFORE any inline code that uses DB/security -->
-<script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
-<script src="js/security.js"></script>
-<script src="js/db.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/auth-widget.js"></script>
-<script src="config.js"></script>
-<script>
-'use strict';
-document.getElementById('globalSearch').addEventListener('keydown', async function (e) {
-    if (e.key === 'Enter') {
-        const term = this.value.trim();
-        if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
-    }
-});
-</script>
+    <script src="js/security.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/auth-widget.js"></script>
+    <script src="config.js"></script>
+    <script>
+        'use strict';
+        document.getElementById('globalSearch').addEventListener('keydown', async function (e) {
+            if (e.key === 'Enter') {
+                const term = this.value.trim();
+                if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
+            }
+        });
+    </script>
 </body>
+
 </html>

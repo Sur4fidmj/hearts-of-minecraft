@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,326 +8,522 @@
     <title>Login – Hearts of Minecraft</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            margin:0; padding:0; font-family:'Inter',sans-serif; min-height:100vh;
-            display:flex; flex-direction:column;
-            background:url('https://media.discordapp.net/attachments/1475954657997357240/1489016606389436537/Gemini_Generated_Image_smoa5rsmoa5rsmoa.png?ex=69cee247&is=69cd90c7&hm=21043e307e8f4f2b4c366ae396286d7326e9f7df88d4a09f7f7fdb3c65ab9a55&=&format=webp&quality=lossless&width=974&height=544') no-repeat center center fixed;
-            background-size:cover;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: url('https://i.imgur.com/CGlI7au.png') no-repeat center center fixed;
+            background-size: cover;
         }
+
         body::before {
-            content:''; position:fixed; inset:0; background:inherit;
-            filter:blur(10px); transform:scale(1.05); z-index:-1;
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(10px);
+            transform: scale(1.05);
+            z-index: -1;
         }
-        .hex-grid { position:fixed; inset:0; z-index:-2;
-            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat; }
+
+        .hex-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+        }
 
         /* ── Top bar / logo ── */
         .topbar {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:16px 32px; background:rgba(0,0,0,.4);
-            backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,.08);
-            position:relative; z-index:10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 32px;
+            background: rgba(0, 0, 0, .4);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            position: relative;
+            z-index: 10;
         }
-        .topbar-logo { font-size:20px; font-weight:700; color:#fff; text-decoration:none; }
-        .topbar-back { color:#aaa; text-decoration:none; font-size:14px; transition:color .2s; }
-        .topbar-back:hover { color:#fff; }
+
+        .topbar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .topbar-back {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color .2s;
+        }
+
+        .topbar-back:hover {
+            color: #fff;
+        }
 
         /* ── Card layout ── */
         .auth-wrapper {
-            flex:1; display:flex; align-items:center; justify-content:center;
-            padding:40px 20px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
         }
+
         .auth-card {
-            width:100%; max-width:420px;
-            background:rgba(10,10,20,.85); backdrop-filter:blur(20px);
-            border:1px solid rgba(255,255,255,.12); border-radius:20px;
-            padding:36px 40px;
-            box-shadow:0 16px 64px rgba(0,0,0,.7);
+            width: 100%;
+            max-width: 420px;
+            background: rgba(10, 10, 20, .85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 20px;
+            padding: 36px 40px;
+            box-shadow: 0 16px 64px rgba(0, 0, 0, .7);
         }
+
         .auth-card h1 {
-            font-size:26px; font-weight:700; color:#fff;
-            margin:0 0 4px; text-align:center;
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 4px;
+            text-align: center;
         }
-        .auth-card .subtitle { text-align:center; color:#888; font-size:14px; margin-bottom:28px; }
+
+        .auth-card .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
 
         /* Tab switcher */
         .auth-tabs {
-            display:flex; background:rgba(255,255,255,.06);
-            border-radius:10px; padding:4px; gap:4px; margin-bottom:24px;
+            display: flex;
+            background: rgba(255, 255, 255, .06);
+            border-radius: 10px;
+            padding: 4px;
+            gap: 4px;
+            margin-bottom: 24px;
         }
+
         .auth-tab {
-            flex:1; padding:9px; text-align:center; border-radius:7px;
-            cursor:pointer; color:#888; font-weight:600; font-size:14px;
-            transition:background .2s, color .2s; border:none; background:none; font-family:inherit;
+            flex: 1;
+            padding: 9px;
+            text-align: center;
+            border-radius: 7px;
+            cursor: pointer;
+            color: #888;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background .2s, color .2s;
+            border: none;
+            background: none;
+            font-family: inherit;
         }
-        .auth-tab.active { background:#1a75ff; color:#fff; }
+
+        .auth-tab.active {
+            background: #1a75ff;
+            color: #fff;
+        }
 
         /* Form elements */
-        .form-group { margin-bottom:14px; }
-        label { display:block; font-size:13px; color:#aaa; margin-bottom:5px; font-weight:500; }
-        input[type="text"], input[type="password"], input[type="email"], select {
-            width:100%; padding:11px 14px; border:1px solid rgba(255,255,255,.12);
-            border-radius:9px; background:rgba(255,255,255,.06); color:#fff;
-            font-size:14px; font-family:inherit; outline:none;
-            transition:border-color .2s, background .2s;
+        .form-group {
+            margin-bottom: 14px;
         }
-        input:focus, select:focus { border-color:#1a75ff; background:rgba(26,117,255,.08); }
-        select option { background:#111; color:#fff; }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 9px;
+            background: rgba(255, 255, 255, .06);
+            color: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color .2s, background .2s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1a75ff;
+            background: rgba(26, 117, 255, .08);
+        }
+
+        select option {
+            background: #111;
+            color: #fff;
+        }
 
         .submit-btn {
-            width:100%; padding:12px; background:linear-gradient(135deg,#1a75ff,#0052cc);
-            color:#fff; border:none; border-radius:10px; font-size:15px;
-            font-weight:700; cursor:pointer; font-family:inherit;
-            transition:filter .2s, transform .2s; margin-top:8px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1a75ff, #0052cc);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: filter .2s, transform .2s;
+            margin-top: 8px;
         }
-        .submit-btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
-        .submit-btn:active { transform:translateY(0); }
+
+        .submit-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
 
         /* Divider */
-        .or-divider { display:flex; align-items:center; gap:12px; margin:18px 0; }
-        .or-divider::before, .or-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,.1); }
-        .or-divider span { color:#555; font-size:12px; }
+        .or-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .or-divider span {
+            color: #555;
+            font-size: 12px;
+        }
 
         /* Error / success messages */
         .msg {
-            padding:10px 14px; border-radius:8px; font-size:13px;
-            margin-bottom:14px; display:none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 14px;
+            display: none;
         }
-        .msg.show { display:block; }
-        .msg.error   { background:rgba(231,76,60,.15); border:1px solid rgba(231,76,60,.4); color:#e74c3c; }
-        .msg.success { background:rgba(39,174,96,.15);  border:1px solid rgba(39,174,96,.4);  color:#27ae60; }
+
+        .msg.show {
+            display: block;
+        }
+
+        .msg.error {
+            background: rgba(231, 76, 60, .15);
+            border: 1px solid rgba(231, 76, 60, .4);
+            color: #e74c3c;
+        }
+
+        .msg.success {
+            background: rgba(39, 174, 96, .15);
+            border: 1px solid rgba(39, 174, 96, .4);
+            color: #27ae60;
+        }
 
         /* Nation select icon */
-        .nation-select { position:relative; }
+        .nation-select {
+            position: relative;
+        }
 
         /* Footer text */
-        .auth-footer { text-align:center; margin-top:20px; font-size:13px; color:#555; }
-        .auth-footer a { color:#66aaff; text-decoration:none; }
-        .auth-footer a:hover { text-decoration:underline; }
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .auth-footer a {
+            color: #66aaff;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
 
         /* Password strength */
-        .pw-strength { height:4px; border-radius:2px; margin-top:6px; background:#333; overflow:hidden; }
-        .pw-strength-bar { height:100%; width:0; transition:width .3s, background .3s; border-radius:2px; }
+        .pw-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 6px;
+            background: #333;
+            overflow: hidden;
+        }
 
-        @media(max-width:480px) { .auth-card { padding:28px 24px; } }
+        .pw-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width .3s, background .3s;
+            border-radius: 2px;
+        }
+
+        @media(max-width:480px) {
+            .auth-card {
+                padding: 28px 24px;
+            }
+        }
     </style>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M5MC976G');</script>
+    <!-- End Google Tag Manager -->
 </head>
+
 <body>
-<div class="hex-grid"></div>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5MC976G" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="hex-grid"></div>
 
-<div class="topbar">
-    <a href="index.html" class="topbar-logo">⚔️ Hearts of Minecraft</a>
-    <a href="javascript:history.back()" class="topbar-back">← Back</a>
-</div>
+    <div class="topbar">
+        <a href="index.html" class="topbar-logo">⚔️ Hearts of Minecraft</a>
+        <a href="javascript:history.back()" class="topbar-back">← Back</a>
+    </div>
 
-<div class="auth-wrapper">
-    <div class="auth-card">
-        <h1>Hearts of Minecraft</h1>
-        <p class="subtitle" id="card-subtitle">Welcome back! Enter your details.</p>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <h1>Hearts of Minecraft</h1>
+            <p class="subtitle" id="card-subtitle">Welcome back! Enter your details.</p>
 
-        <div class="auth-tabs">
-            <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
-            <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
-        </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+                <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+            </div>
 
-        <div id="msg" class="msg"></div>
+            <div id="msg" class="msg"></div>
 
-        <!-- ── Login Form ── -->
-        <form id="loginForm" autocomplete="on">
-            <div class="form-group">
-                <label for="loginUser" data-i18n="auth.username">Username</label>
-                <input type="text" id="loginUser" autocomplete="username" required>
-            </div>
-            <div class="form-group">
-                <label for="loginPass" data-i18n="auth.password">Password</label>
-                <input type="password" id="loginPass" autocomplete="current-password" required>
-            </div>
-            <button type="submit" class="submit-btn" data-i18n="auth.login">Login</button>
-        </form>
+            <!-- ── Login Form ── -->
+            <form id="loginForm" autocomplete="on">
+                <div class="form-group">
+                    <label for="loginUser" data-i18n="auth.username">Username</label>
+                    <input type="text" id="loginUser" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPass" data-i18n="auth.password">Password</label>
+                    <input type="password" id="loginPass" autocomplete="current-password" required>
+                </div>
+                <button type="submit" class="submit-btn" data-i18n="auth.login">Login</button>
+            </form>
 
-        <!-- ── Signup Form (hidden initially) ── -->
-        <form id="signupForm" style="display:none;" autocomplete="on">
-            <div class="form-group">
-                <label for="sEmail" data-i18n="auth.email">Email</label>
-                <input type="email" id="sEmail" autocomplete="email" required>
-            </div>
-            <div class="form-group">
-                <label for="sUser" data-i18n="auth.username">Username</label>
-                <input type="text" id="sUser" autocomplete="username" required maxlength="24">
-            </div>
-            <div class="form-group">
-                <label for="sPass" data-i18n="auth.password">Password</label>
-                <input type="password" id="sPass" autocomplete="new-password" required minlength="6" id="sPass">
-                <div class="pw-strength"><div class="pw-strength-bar" id="pwBar"></div></div>
-            </div>
-            <div class="form-group">
-                <label for="sDiscord" data-i18n="auth.discord">Discord Username (optional)</label>
-                <input type="text" id="sDiscord" maxlength="50">
-            </div>
-            <div class="form-group">
-                <label for="sNation" data-i18n="auth.nation">Nation (optional)</label>
-                <select id="sNation">
-                    <option value="">Select Nation</option>
-                    <option value="Germany">🇩🇪 Germany</option>
-                    <option value="Soviet Union">🇷🇺 Soviet Union</option>
-                    <option value="Japan">🇯🇵 Japan</option>
-                    <option value="Italy">🇮🇹 Italy</option>
-                    <option value="France">🇫🇷 France</option>
-                    <option value="United Kingdom">🇬🇧 United Kingdom</option>
-                    <option value="United States">🇺🇸 United States</option>
-                    <option value="China">🇨🇳 China</option>
-                </select>
-            </div>
-            <button type="submit" class="submit-btn" data-i18n="auth.signup">Create Account</button>
-        </form>
+            <!-- ── Signup Form (hidden initially) ── -->
+            <form id="signupForm" style="display:none;" autocomplete="on">
+                <div class="form-group">
+                    <label for="sEmail" data-i18n="auth.email">Email</label>
+                    <input type="email" id="sEmail" autocomplete="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="sUser" data-i18n="auth.username">Username</label>
+                    <input type="text" id="sUser" autocomplete="username" required maxlength="24">
+                </div>
+                <div class="form-group">
+                    <label for="sPass" data-i18n="auth.password">Password</label>
+                    <input type="password" id="sPass" autocomplete="new-password" required minlength="6" id="sPass">
+                    <div class="pw-strength">
+                        <div class="pw-strength-bar" id="pwBar"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sDiscord" data-i18n="auth.discord">Discord Username (optional)</label>
+                    <input type="text" id="sDiscord" maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="sNation" data-i18n="auth.nation">Nation (optional)</label>
+                    <select id="sNation">
+                        <option value="">Select Nation</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="Soviet Union">🇷🇺 Soviet Union</option>
+                        <option value="Japan">🇯🇵 Japan</option>
+                        <option value="Italy">🇮🇹 Italy</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                        <option value="United States">🇺🇸 United States</option>
+                        <option value="China">🇨🇳 China</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn" data-i18n="auth.signup">Create Account</button>
+            </form>
 
-        <div class="auth-footer">
-            <span id="switch-text">Don't have an account?</span>
-            <a href="#" id="switch-link" onclick="switchTab('signup'); return false;">Sign Up</a>
+            <div class="auth-footer">
+                <span id="switch-text">Don't have an account?</span>
+                <a href="#" id="switch-link" onclick="switchTab('signup'); return false;">Sign Up</a>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
-<script src="js/security.js"></script>
-<script src="js/db.js"></script>
-<script src="js/i18n.js"></script>
-<script src="config.js"></script>
-<script>
-'use strict';
 
-/* ─── Redirect if already logged in ─────────────────────────────────────── */
-(async () => {
-    const u = await DB.getCurrentUser();
-    if (u) {
-        const redir = new URLSearchParams(location.search).get('next') || 'index.html';
-        window.location.href = redir;
-    }
-})();
+    <script src="js/security.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="config.js"></script>
+    <script>
+        'use strict';
 
-/* ─── Tab switching ─────────────────────────────────────────────────────── */
-function switchTab(tab) {
-    const isLogin = tab === 'login';
-    document.getElementById('loginForm').style.display  = isLogin ? '' : 'none';
-    document.getElementById('signupForm').style.display = isLogin ? 'none' : '';
-    document.getElementById('tab-login').classList.toggle('active', isLogin);
-    document.getElementById('tab-signup').classList.toggle('active', !isLogin);
-    document.getElementById('card-subtitle').textContent = isLogin
-        ? 'Welcome back! Enter your details.'
-        : 'Join the Hearts of Minecraft community.';
-    document.getElementById('switch-text').textContent = isLogin
-        ? (typeof i18n !== 'undefined' ? i18n.t('auth.no.account') : "Don't have an account?")
-        : (typeof i18n !== 'undefined' ? i18n.t('auth.have.account') : 'Already have an account?');
-    document.getElementById('switch-link').textContent = isLogin
-        ? (typeof i18n !== 'undefined' ? i18n.t('auth.signup') : 'Sign Up')
-        : (typeof i18n !== 'undefined' ? i18n.t('auth.login') : 'Login');
-    document.getElementById('switch-link').onclick = e => { e.preventDefault(); switchTab(isLogin ? 'signup' : 'login'); };
-    hideMsg();
-}
+        /* ─── Redirect if already logged in ─────────────────────────────────────── */
+        (async () => {
+            const u = await DB.getCurrentUser();
+            if (u) {
+                const redir = new URLSearchParams(location.search).get('next') || 'index.html';
+                window.location.href = redir;
+            }
+        })();
 
-/* ─── Message helpers ───────────────────────────────────────────────────── */
-function showMsg(text, type = 'error') {
-    const el = document.getElementById('msg');
-    el.textContent = text;
-    el.className = 'msg show ' + type;
-}
-function hideMsg() {
-    document.getElementById('msg').className = 'msg';
-}
+        /* ─── Tab switching ─────────────────────────────────────────────────────── */
+        function switchTab(tab) {
+            const isLogin = tab === 'login';
+            document.getElementById('loginForm').style.display = isLogin ? '' : 'none';
+            document.getElementById('signupForm').style.display = isLogin ? 'none' : '';
+            document.getElementById('tab-login').classList.toggle('active', isLogin);
+            document.getElementById('tab-signup').classList.toggle('active', !isLogin);
+            document.getElementById('card-subtitle').textContent = isLogin
+                ? 'Welcome back! Enter your details.'
+                : 'Join the Hearts of Minecraft community.';
+            document.getElementById('switch-text').textContent = isLogin
+                ? (typeof i18n !== 'undefined' ? i18n.t('auth.no.account') : "Don't have an account?")
+                : (typeof i18n !== 'undefined' ? i18n.t('auth.have.account') : 'Already have an account?');
+            document.getElementById('switch-link').textContent = isLogin
+                ? (typeof i18n !== 'undefined' ? i18n.t('auth.signup') : 'Sign Up')
+                : (typeof i18n !== 'undefined' ? i18n.t('auth.login') : 'Login');
+            document.getElementById('switch-link').onclick = e => { e.preventDefault(); switchTab(isLogin ? 'signup' : 'login'); };
+            hideMsg();
+        }
 
-/* ─── After login redirect ─────────────────────────────────────────────── */
-function getRedirect() {
-    return new URLSearchParams(location.search).get('next') || 'index.html';
-}
+        /* ─── Message helpers ───────────────────────────────────────────────────── */
+        function showMsg(text, type = 'error') {
+            const el = document.getElementById('msg');
+            el.textContent = text;
+            el.className = 'msg show ' + type;
+        }
+        function hideMsg() {
+            document.getElementById('msg').className = 'msg';
+        }
 
-/* ─── Login ─────────────────────────────────────────────────────────────── */
-document.getElementById('loginForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    hideMsg();
-    const username = document.getElementById('loginUser').value.trim();
-    const password = document.getElementById('loginPass').value;
+        /* ─── After login redirect ─────────────────────────────────────────────── */
+        function getRedirect() {
+            return new URLSearchParams(location.search).get('next') || 'index.html';
+        }
 
-    if (!username || !password) { showMsg('Please enter username and password.'); return; }
+        /* ─── Login ─────────────────────────────────────────────────────────────── */
+        document.getElementById('loginForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            hideMsg();
+            const username = document.getElementById('loginUser').value.trim();
+            const password = document.getElementById('loginPass').value;
 
-    const rl = security.checkLoginRateLimit(username);
-    if (!rl.allowed) {
-        showMsg(`Too many failed attempts. Wait ${Math.ceil(rl.remainingMs / 1000)}s.`); return;
-    }
+            if (!username || !password) { showMsg('Please enter username and password.'); return; }
 
-    const hashed = await security.hashPassword(password);
-    const users  = await DB.getUsers();
-    const found  = users.find(u => u.username === username &&
-                    (u.password === hashed || u.password === password));
+            const rl = security.checkLoginRateLimit(username);
+            if (!rl.allowed) {
+                showMsg(`Too many failed attempts. Wait ${Math.ceil(rl.remainingMs / 1000)}s.`); return;
+            }
 
-    if (found) {
-        if (found.password !== hashed) { found.password = hashed; await DB.saveUsers(users); }
-        security.clearLoginRateLimit(username);
-        await DB.setCurrentUser(username);
-        showMsg('Welcome back, ' + username + '! Redirecting…', 'success');
-        setTimeout(() => window.location.href = getRedirect(), 800);
-    } else {
-        security.recordFailedLogin(username);
-        showMsg('Invalid username or password.');
-    }
-});
+            const hashed = await security.hashPassword(password);
+            const users = await DB.getUsers();
+            const found = users.find(u => u.username === username &&
+                (u.password === hashed || u.password === password));
 
-/* ─── Signup ────────────────────────────────────────────────────────────── */
-document.getElementById('signupForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    hideMsg();
-    const email    = document.getElementById('sEmail').value.trim();
-    const username = document.getElementById('sUser').value.trim();
-    const password = document.getElementById('sPass').value;
-    const discord  = document.getElementById('sDiscord').value.trim();
-    const nation   = document.getElementById('sNation').value;
+            if (found) {
+                if (found.password !== hashed) { found.password = hashed; await DB.saveUsers(users); }
+                security.clearLoginRateLimit(username);
+                await DB.setCurrentUser(username);
+                showMsg('Welcome back, ' + username + '! Redirecting…', 'success');
+                setTimeout(() => window.location.href = getRedirect(), 800);
+            } else {
+                security.recordFailedLogin(username);
+                showMsg('Invalid username or password.');
+            }
+        });
 
-    if (!email || !username || !password) { showMsg('Email, username and password are required.'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Enter a valid email address.'); return; }
-    if (username.length < 3 || username.length > 24) { showMsg('Username must be 3–24 characters.'); return; }
-    if (!/^[a-zA-Z0-9_\-]+$/.test(username)) { showMsg('Username: only letters, numbers, _ and - allowed.'); return; }
-    if (password.length < 6) { showMsg('Password must be at least 6 characters.'); return; }
+        /* ─── Signup ────────────────────────────────────────────────────────────── */
+        document.getElementById('signupForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            hideMsg();
+            const email = document.getElementById('sEmail').value.trim();
+            const username = document.getElementById('sUser').value.trim();
+            const password = document.getElementById('sPass').value;
+            const discord = document.getElementById('sDiscord').value.trim();
+            const nation = document.getElementById('sNation').value;
 
-    const users = await DB.getUsers();
-    if (users.find(u => u.username === username)) { showMsg('Username already taken.'); return; }
-    if (users.find(u => u.email === email)) { showMsg('Email already registered.'); return; }
+            if (!email || !username || !password) { showMsg('Email, username and password are required.'); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Enter a valid email address.'); return; }
+            if (username.length < 3 || username.length > 24) { showMsg('Username must be 3–24 characters.'); return; }
+            if (!/^[a-zA-Z0-9_\-]+$/.test(username)) { showMsg('Username: only letters, numbers, _ and - allowed.'); return; }
+            if (password.length < 6) { showMsg('Password must be at least 6 characters.'); return; }
 
-    const hashed = await security.hashPassword(password);
-    const isAdmin = window.HOM_CONFIG && window.HOM_CONFIG.DEFAULT_ADMINS && window.HOM_CONFIG.DEFAULT_ADMINS.includes(username);
+            const users = await DB.getUsers();
+            if (users.find(u => u.username === username)) { showMsg('Username already taken.'); return; }
+            if (users.find(u => u.email === email)) { showMsg('Email already registered.'); return; }
 
-    await DB.saveUser({
-        username, password: hashed, email, discord, nation,
-        isAdmin, profilePic: null, followers: [], following: [],
-        notifications: [], likedTags: [], likedBlogs: [],
-        settings: { language: (typeof i18n !== 'undefined' ? i18n.getLang() : 'en'), notifications: true, profilePublic: true }
-    });
+            const hashed = await security.hashPassword(password);
+            const isAdmin = window.HOM_CONFIG && window.HOM_CONFIG.DEFAULT_ADMINS && window.HOM_CONFIG.DEFAULT_ADMINS.includes(username);
 
-    await DB.setCurrentUser(username);
-    showMsg('Account created! Welcome, ' + username + '! Redirecting…', 'success');
-    setTimeout(() => window.location.href = getRedirect(), 900);
-});
+            await DB.saveUser({
+                username, password: hashed, email, discord, nation,
+                isAdmin, profilePic: null, followers: [], following: [],
+                notifications: [], likedTags: [], likedBlogs: [],
+                settings: { language: (typeof i18n !== 'undefined' ? i18n.getLang() : 'en'), notifications: true, profilePublic: true }
+            });
 
-/* ─── Password strength indicator ───────────────────────────────────────── */
-document.getElementById('sPass').addEventListener('input', function () {
-    const v = this.value;
-    let strength = 0;
-    if (v.length >= 6)  strength++;
-    if (v.length >= 10) strength++;
-    if (/[A-Z]/.test(v)) strength++;
-    if (/[0-9]/.test(v)) strength++;
-    if (/[^A-Za-z0-9]/.test(v)) strength++;
-    const colors = ['#e74c3c','#e67e22','#f1c40f','#2ecc71','#27ae60'];
-    const bar = document.getElementById('pwBar');
-    bar.style.width = (strength / 5 * 100) + '%';
-    bar.style.background = colors[Math.max(0, strength - 1)] || '#e74c3c';
-});
+            await DB.setCurrentUser(username);
+            showMsg('Account created! Welcome, ' + username + '! Redirecting…', 'success');
+            setTimeout(() => window.location.href = getRedirect(), 900);
+        });
 
-/* ─── URL param: auto-switch tab ────────────────────────────────────────── */
-const urlTab = new URLSearchParams(location.search).get('tab');
-if (urlTab === 'signup') switchTab('signup');
+        /* ─── Password strength indicator ───────────────────────────────────────── */
+        document.getElementById('sPass').addEventListener('input', function () {
+            const v = this.value;
+            let strength = 0;
+            if (v.length >= 6) strength++;
+            if (v.length >= 10) strength++;
+            if (/[A-Z]/.test(v)) strength++;
+            if (/[0-9]/.test(v)) strength++;
+            if (/[^A-Za-z0-9]/.test(v)) strength++;
+            const colors = ['#e74c3c', '#e67e22', '#f1c40f', '#2ecc71', '#27ae60'];
+            const bar = document.getElementById('pwBar');
+            bar.style.width = (strength / 5 * 100) + '%';
+            bar.style.background = colors[Math.max(0, strength - 1)] || '#e74c3c';
+        });
 
-/* Apply i18n */
-if (typeof i18n !== 'undefined') i18n.apply();
-</script>
+        /* ─── URL param: auto-switch tab ────────────────────────────────────────── */
+        const urlTab = new URLSearchParams(location.search).get('tab');
+        if (urlTab === 'signup') switchTab('signup');
+
+        /* Apply i18n */
+        if (typeof i18n !== 'undefined') i18n.apply();
+    </script>
 </body>
+
 </html>

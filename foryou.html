@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,348 +8,599 @@
     <title>For You – Hearts of Minecraft</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { margin:0; padding:0; font-family:'Inter',sans-serif;
-            background:url('https://media.discordapp.net/attachments/1475954657997357240/1489016606389436537/Gemini_Generated_Image_smoa5rsmoa5rsmoa.png?ex=69cee247&is=69cd90c7&hm=21043e307e8f4f2b4c366ae396286d7326e9f7df88d4a09f7f7fdb3c65ab9a55&=&format=webp&quality=lossless&width=974&height=544') no-repeat center center fixed; background-size:cover; }
-        body::before { content:''; position:fixed; inset:0; background:inherit; filter:blur(10px); transform:scale(1.05); z-index:-1; }
-        .hex-grid { position:fixed; inset:0; z-index:-2;
-            background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat; }
-        .main-container { max-width:1200px; margin:0 auto; padding:20px;
-            background:rgba(0,0,0,.7); border-radius:10px; box-shadow:0 0 30px rgba(0,0,0,.7);
-            backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.1); position:relative; z-index:1; }
-        .header { display:flex; justify-content:space-between; align-items:center; padding:20px 0; border-bottom:1px solid #333; }
-        .logo { font-size:24px; font-weight:bold; color:#fff; }
-        .search-bar { flex:1; margin:0 20px; }
-        .search-bar input { width:100%; padding:10px; border:none; border-radius:5px;
-            background:rgba(255,255,255,.1); color:#fff; box-sizing:border-box; }
-        .nav { display:flex; gap:20px; flex-wrap:wrap; }
-        .nav a { color:#fff; text-decoration:none; padding:10px 15px; border-radius:5px; transition:background .3s; font-weight:bold; }
-        .nav a:hover { background:rgba(255,255,255,.1); }
-        .hero { text-align:center; padding:50px 0; }
-        .hero h1 { font-size:48px; margin-bottom:20px; color:#fff; }
-        .hero p { font-size:18px; margin-bottom:30px; color:#ccc; }
-        .content { display:grid; grid-template-columns:1fr; gap:20px; padding:30px 0; }
-        .content-block { background:rgba(255,255,255,.1); padding:20px; border-radius:10px; }
-        .search-section { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
-        .search-section input, .search-section select {
-            padding:10px; border:none; border-radius:5px;
-            background:rgba(255,255,255,.1); color:#fff; flex:1; min-width:140px; }
-        .blog-post { border:1px solid #333; margin:1rem 0; padding:1rem;
-            background:rgba(0,0,0,.5); border-radius:8px; transition:background .3s; text-align:left; }
-        .blog-post:hover { background:rgba(0,0,0,.7); }
-        .blog-post.newspaper { column-count:2; font-family:'Times New Roman',serif; font-size:14px; line-height:1.4; }
-        .blog-post h3 { color:#fff; margin:0 0 .5rem; }
-        .blog-post p { margin:.5rem 0; color:#ccc; }
-        .blog-post img { max-width:100%; height:auto; margin:.5rem 0; }
-        .tags { margin:.5rem 0; }
-        .tag { display:inline-block; background:#444; color:#fff; padding:.2rem .5rem;
-            margin:.2rem; border-radius:4px; font-size:12px; cursor:pointer; }
-        .tag:hover { background:#666; }
-        .likeBtn { font-size:18px; background:none; border:1px solid #555;
-            cursor:pointer; padding:.3rem .6rem; border-radius:4px;
-            transition:all .3s; color:#fff; margin:.2rem; }
-        .likeBtn:hover { background:rgba(255,255,255,.1); }
-        .likeBtn.liked { color:#ffcc00; border-color:#ffcc00; }
-        .comment { margin:.5rem 0; padding:.5rem; background:#333; border-radius:4px; color:#ccc; font-size:13px; }
-        .comment-form { display:flex; gap:6px; margin-top:.5rem; }
-        .comment-form textarea { flex:1; padding:.4rem; border:1px solid #444; border-radius:4px;
-            background:rgba(255,255,255,.1); color:#fff; resize:vertical; min-height:40px; box-sizing:border-box; }
-        .comment-form button { padding:.4rem .8rem; background:#0066cc; color:#fff;
-            border:none; cursor:pointer; border-radius:4px; white-space:nowrap; }
-        .profileLink { color:#66aaff; text-decoration:none; }
-        .profileLink:hover { text-decoration:underline; }
-        .footer { text-align:center; padding:20px 0; border-top:1px solid #333; color:#ccc; }
-        #feed { min-height:80px; }
-        .empty-msg { color:#aaa; text-align:center; padding:2rem; }
-        @media(max-width:768px){ .header{flex-direction:column;gap:20px;} .search-bar{margin:0;}
-            .blog-post.newspaper{column-count:1;} }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: url('https://i.imgur.com/CGlI7au.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: inherit;
+            filter: blur(10px);
+            transform: scale(1.05);
+            z-index: -1;
+        }
+
+        .hex-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 93.3,25 93.3,75 50,95 6.7,75 6.7,25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, .7);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, .7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, .1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .search-bar {
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background .3s;
+            font-weight: bold;
+        }
+
+        .nav a:hover {
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 30px 0;
+        }
+
+        .content-block {
+            background: rgba(255, 255, 255, .1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-section input,
+        .search-section select {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .blog-post {
+            border: 1px solid #333;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, .5);
+            border-radius: 8px;
+            transition: background .3s;
+            text-align: left;
+        }
+
+        .blog-post:hover {
+            background: rgba(0, 0, 0, .7);
+        }
+
+        .blog-post.newspaper {
+            column-count: 2;
+            font-family: 'Times New Roman', serif;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .blog-post h3 {
+            color: #fff;
+            margin: 0 0 .5rem;
+        }
+
+        .blog-post p {
+            margin: .5rem 0;
+            color: #ccc;
+        }
+
+        .blog-post img {
+            max-width: 100%;
+            height: auto;
+            margin: .5rem 0;
+        }
+
+        .tags {
+            margin: .5rem 0;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #444;
+            color: #fff;
+            padding: .2rem .5rem;
+            margin: .2rem;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: #666;
+        }
+
+        .likeBtn {
+            font-size: 18px;
+            background: none;
+            border: 1px solid #555;
+            cursor: pointer;
+            padding: .3rem .6rem;
+            border-radius: 4px;
+            transition: all .3s;
+            color: #fff;
+            margin: .2rem;
+        }
+
+        .likeBtn:hover {
+            background: rgba(255, 255, 255, .1);
+        }
+
+        .likeBtn.liked {
+            color: #ffcc00;
+            border-color: #ffcc00;
+        }
+
+        .comment {
+            margin: .5rem 0;
+            padding: .5rem;
+            background: #333;
+            border-radius: 4px;
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 6px;
+            margin-top: .5rem;
+        }
+
+        .comment-form textarea {
+            flex: 1;
+            padding: .4rem;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            resize: vertical;
+            min-height: 40px;
+            box-sizing: border-box;
+        }
+
+        .comment-form button {
+            padding: .4rem .8rem;
+            background: #0066cc;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .profileLink {
+            color: #66aaff;
+            text-decoration: none;
+        }
+
+        .profileLink:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            color: #ccc;
+        }
+
+        #feed {
+            min-height: 80px;
+        }
+
+        .empty-msg {
+            color: #aaa;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @media(max-width:768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .search-bar {
+                margin: 0;
+            }
+
+            .blog-post.newspaper {
+                column-count: 1;
+            }
+        }
     </style>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M5MC976G');</script>
+    <!-- End Google Tag Manager -->
 </head>
+
 <body>
-<div class="hex-grid"></div>
-<div class="main-container">
-    <header class="header">
-        <div class="logo">Hearts of Minecraft</div>
-        <div class="search-bar">
-            <input type="text" id="globalSearch" placeholder="Search...">
-        </div>
-        <nav class="nav">
-            <a href="index.html" data-i18n="nav.home">Home</a>
-            <a href="shop.html" data-i18n="nav.shop">Shop</a>
-            <a href="map.html" data-i18n="nav.map">Live Map</a>
-            <a href="stats.html" data-i18n="nav.stats">Statistics</a>
-            <a href="foryou.html" data-i18n="nav.foryou">For You</a>
-            <a href="blog.html" data-i18n="nav.blog">Blog</a>
-            <a href="about.html" data-i18n="nav.about">About</a>
-            <a href="https://discord.gg/A9ZYsud9HY" style="background:#1a75ff;border-radius:5px;padding:10px 15px;">Discord</a>
-            <div id="nav-auth"></div>
-        </nav>
-    </header>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5MC976G" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="hex-grid"></div>
+    <div class="main-container">
+        <header class="header">
+            <div class="logo">Hearts of Minecraft</div>
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="Search...">
+            </div>
+            <nav class="nav">
+                <a href="index.html" data-i18n="nav.home">Home</a>
+                <a href="shop.html" data-i18n="nav.shop">Shop</a>
+                <a href="map.html" data-i18n="nav.map">Live Map</a>
+                <a href="stats.html" data-i18n="nav.stats">Statistics</a>
+                <a href="foryou.html" data-i18n="nav.foryou">For You</a>
+                <a href="blog.html" data-i18n="nav.blog">Blog</a>
+                <a href="about.html" data-i18n="nav.about">About</a>
+                <a href="https://discord.gg/A9ZYsud9HY"
+                    style="background:#1a75ff;border-radius:5px;padding:10px 15px;">Discord</a>
+                <div id="nav-auth"></div>
+            </nav>
+        </header>
 
-    <section class="hero">
-        <h1 data-i18n="foryou.title">For You</h1>
-        <p data-i18n="foryou.sub">Discover personalized blog posts from the Hearts of Minecraft community.</p>
-    </section>
+        <section class="hero">
+            <h1 data-i18n="foryou.title">For You</h1>
+            <p data-i18n="foryou.sub">Discover personalized blog posts from the Hearts of Minecraft community.</p>
+        </section>
 
-    <div class="content">
-        <div class="content-block">
-            <section class="search-section">
-                <input type="text" id="blogSearch" placeholder="Search blogs by title, content or author...">
-                <select id="tagFilter">
-                    <option value="">All Tags</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Soviet Union">Soviet Union</option>
-                    <option value="Japan">Japan</option>
-                    <option value="Italy">Italy</option>
-                    <option value="France">France</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="United States">United States</option>
-                    <option value="China">China</option>
-                </select>
-            </section>
-            <section>
-                <h2 style="color:#fff;">Personalized Blog Feed</h2>
-                <div id="feed"></div>
-            </section>
+        <div class="content">
+            <div class="content-block">
+                <section class="search-section">
+                    <input type="text" id="blogSearch" placeholder="Search blogs by title, content or author...">
+                    <select id="tagFilter">
+                        <option value="">All Tags</option>
+                        <option value="Germany">Germany</option>
+                        <option value="Soviet Union">Soviet Union</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Italy">Italy</option>
+                        <option value="France">France</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="United States">United States</option>
+                        <option value="China">China</option>
+                    </select>
+                </section>
+                <section>
+                    <h2 style="color:#fff;">Personalized Blog Feed</h2>
+                    <div id="feed"></div>
+                </section>
+            </div>
         </div>
+
+        <footer class="footer">
+            <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
+        </footer>
     </div>
 
-    <footer class="footer">
-        <p>© 2026 Hearts of Minecraft Server. Not affiliated with Mojang or Paradox Interactive.</p>
-    </footer>
-</div>
 
-<script src="https://unpkg.com/dexie@3/dist/dexie.min.js"></script>
-<script src="js/security.js"></script>
-<script src="js/db.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/auth-widget.js"></script>
-<script src="config.js"></script>
-<script>
-'use strict';
+    <script src="js/security.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/auth-widget.js"></script>
+    <script src="config.js"></script>
+    <script>
+        'use strict';
 
-const NATIONS = {
-    'Germany':        { tag:'GER', color:'#aaaaaa' },
-    'Soviet Union':   { tag:'SOV', color:'#ff6666' },
-    'Japan':          { tag:'JAP', color:'#ffff44' },
-    'Italy':          { tag:'ITA', color:'#44ff44' },
-    'France':         { tag:'FRA', color:'#6699ff' },
-    'United Kingdom': { tag:'ENG', color:'#ff4444' },
-    'United States':  { tag:'USA', color:'#4466ff' },
-    'China':          { tag:'CHI', color:'#FFD700' }
-};
+        const NATIONS = {
+            'Germany': { tag: 'GER', color: '#aaaaaa' },
+            'Soviet Union': { tag: 'SOV', color: '#ff6666' },
+            'Japan': { tag: 'JAP', color: '#ffff44' },
+            'Italy': { tag: 'ITA', color: '#44ff44' },
+            'France': { tag: 'FRA', color: '#6699ff' },
+            'United Kingdom': { tag: 'ENG', color: '#ff4444' },
+            'United States': { tag: 'USA', color: '#4466ff' },
+            'China': { tag: 'CHI', color: '#FFD700' }
+        };
 
-let currentUser = null;
-const feed = document.getElementById('feed');
-const DEFAULT_PIC = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><circle cx='15' cy='15' r='15' fill='%23333'/><text x='15' y='20' text-anchor='middle' fill='%23fff' font-size='12'>?</text></svg>";
+        let currentUser = null;
+        const feed = document.getElementById('feed');
+        const DEFAULT_PIC = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><circle cx='15' cy='15' r='15' fill='%23333'/><text x='15' y='20' text-anchor='middle' fill='%23fff' font-size='12'>?</text></svg>";
 
-function invertColor(hex) {
-    hex = hex.replace('#','');
-    if (hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
-    const r = 255 - parseInt(hex.slice(0,2),16);
-    const g = 255 - parseInt(hex.slice(2,4),16);
-    const b = 255 - parseInt(hex.slice(4,6),16);
-    return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
-}
-
-async function loadFeed() {
-    const users     = await DB.getUsers();
-    const user      = users.find(u => u.username === currentUser);
-    const likedTags = user ? (user.likedTags || []) : [];
-
-    let blogs = (await DB.getBlogs()).filter(b =>
-        !b.private && (!b.publishTime || new Date(b.publishTime) <= new Date())
-    );
-
-    const searchTerm = document.getElementById('blogSearch').value.trim().toLowerCase();
-    if (searchTerm) {
-        blogs = blogs.filter(b =>
-            b.title.toLowerCase().includes(searchTerm) ||
-            b.content.toLowerCase().includes(searchTerm) ||
-            (b.author||'').toLowerCase().includes(searchTerm)
-        );
-    }
-
-    const tagFilter = document.getElementById('tagFilter').value;
-    if (tagFilter) {
-        blogs = blogs.filter(b => b.tags && b.tags.includes(tagFilter));
-    }
-
-    blogs.forEach(b => {
-        b._score = 0;
-        if (b.tags) b.tags.forEach(t => { if (likedTags.includes(t)) b._score++; });
-        if (b.seoFriendly) b._score += 5;
-    });
-    blogs.sort((a,b) => b._score - a._score || new Date(b.date) - new Date(a.date));
-
-    feed.innerHTML = '';
-    if (!blogs.length) {
-        feed.innerHTML = '<p class="empty-msg">No blog posts found.</p>';
-        return;
-    }
-
-    for (const blog of blogs) {
-        const authorUser = users.find(u => u.username === blog.author);
-        const liked      = user && (user.likedBlogs||[]).includes(blog.id);
-        const likeCount  = users.filter(u => (u.likedBlogs||[]).includes(blog.id)).length;
-
-        const post = document.createElement('div');
-        post.className = 'blog-post' + (blog.format === 'newspaper' ? ' newspaper' : '');
-        if (blog.bgColor && blog.bgColor !== '#000000') {
-            post.style.backgroundColor = blog.bgColor;
-            post.style.color = invertColor(blog.bgColor);
+        function invertColor(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+            const r = 255 - parseInt(hex.slice(0, 2), 16);
+            const g = 255 - parseInt(hex.slice(2, 4), 16);
+            const b = 255 - parseInt(hex.slice(4, 6), 16);
+            return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
         }
 
-        const h3 = document.createElement('h3');
-        h3.textContent = blog.title;
-        post.appendChild(h3);
+        async function loadFeed() {
+            const users = await DB.getUsers();
+            const user = users.find(u => u.username === currentUser);
+            const likedTags = user ? (user.likedTags || []) : [];
 
-        const authorDiv = document.createElement('p');
-        const pic = document.createElement('img');
-        pic.src = (authorUser && authorUser.profilePic) ? authorUser.profilePic : DEFAULT_PIC;
-        pic.style.cssText = 'width:24px;height:24px;border-radius:50%;margin-right:5px;vertical-align:middle;object-fit:cover;';
-        pic.alt = '';
-        authorDiv.appendChild(pic);
+            let blogs = (await DB.getBlogs()).filter(b =>
+                !b.private && (!b.publishTime || new Date(b.publishTime) <= new Date())
+            );
 
-        const link = document.createElement('a');
-        link.href = 'profile.html?user=' + security.encodeParam(blog.author);
-        link.className = 'profileLink';
-        security.setSafeDisplayName(link, blog.author, authorUser ? authorUser.nation : null, NATIONS);
-        authorDiv.appendChild(link);
+            const searchTerm = document.getElementById('blogSearch').value.trim().toLowerCase();
+            if (searchTerm) {
+                blogs = blogs.filter(b =>
+                    b.title.toLowerCase().includes(searchTerm) ||
+                    b.content.toLowerCase().includes(searchTerm) ||
+                    (b.author || '').toLowerCase().includes(searchTerm)
+                );
+            }
 
-        const dateEl = document.createElement('span');
-        dateEl.style.cssText = 'color:#999;font-size:12px;margin-left:8px;';
-        dateEl.textContent = new Date(blog.date).toLocaleString();
-        authorDiv.appendChild(dateEl);
-        post.appendChild(authorDiv);
+            const tagFilter = document.getElementById('tagFilter').value;
+            if (tagFilter) {
+                blogs = blogs.filter(b => b.tags && b.tags.includes(tagFilter));
+            }
 
-        const contentDiv = document.createElement('div');
-        contentDiv.innerHTML = security.sanitizeBlogHTML(blog.content);
-        contentDiv.style.margin = '8px 0';
-        post.appendChild(contentDiv);
-
-        if (blog.image && blog.image.startsWith('data:image/')) {
-            const img = document.createElement('img');
-            img.src = blog.image;
-            img.alt = 'Blog image';
-            post.appendChild(img);
-        }
-
-        if (blog.tags && blog.tags.length) {
-            const tagsDiv = document.createElement('div');
-            tagsDiv.className = 'tags';
-            blog.tags.forEach(t => {
-                const span = document.createElement('span');
-                span.className = 'tag';
-                span.textContent = t;
-                span.title = 'Filter by ' + t;
-                span.onclick = () => {
-                    document.getElementById('tagFilter').value = t;
-                    loadFeed();
-                };
-                tagsDiv.appendChild(span);
+            blogs.forEach(b => {
+                b._score = 0;
+                if (b.tags) b.tags.forEach(t => { if (likedTags.includes(t)) b._score++; });
+                if (b.seoFriendly) b._score += 5;
             });
-            post.appendChild(tagsDiv);
+            blogs.sort((a, b) => b._score - a._score || new Date(b.date) - new Date(a.date));
+
+            feed.innerHTML = '';
+            if (!blogs.length) {
+                feed.innerHTML = '<p class="empty-msg">No blog posts found.</p>';
+                return;
+            }
+
+            for (const blog of blogs) {
+                const authorUser = users.find(u => u.username === blog.author);
+                const liked = user && (user.likedBlogs || []).includes(blog.id);
+                const likeCount = users.filter(u => (u.likedBlogs || []).includes(blog.id)).length;
+
+                const post = document.createElement('div');
+                post.className = 'blog-post' + (blog.format === 'newspaper' ? ' newspaper' : '');
+                if (blog.bgColor && blog.bgColor !== '#000000') {
+                    post.style.backgroundColor = blog.bgColor;
+                    post.style.color = invertColor(blog.bgColor);
+                }
+
+                const h3 = document.createElement('h3');
+                h3.textContent = blog.title;
+                post.appendChild(h3);
+
+                const authorDiv = document.createElement('p');
+                const pic = document.createElement('img');
+                pic.src = (authorUser && authorUser.profilePic) ? authorUser.profilePic : DEFAULT_PIC;
+                pic.style.cssText = 'width:24px;height:24px;border-radius:50%;margin-right:5px;vertical-align:middle;object-fit:cover;';
+                pic.alt = '';
+                authorDiv.appendChild(pic);
+
+                const link = document.createElement('a');
+                link.href = 'profile.html?user=' + security.encodeParam(blog.author);
+                link.className = 'profileLink';
+                security.setSafeDisplayName(link, blog.author, authorUser ? authorUser.nation : null, NATIONS);
+                authorDiv.appendChild(link);
+
+                const dateEl = document.createElement('span');
+                dateEl.style.cssText = 'color:#999;font-size:12px;margin-left:8px;';
+                dateEl.textContent = new Date(blog.date).toLocaleString();
+                authorDiv.appendChild(dateEl);
+                post.appendChild(authorDiv);
+
+                const contentDiv = document.createElement('div');
+                contentDiv.innerHTML = security.sanitizeBlogHTML(blog.content);
+                contentDiv.style.margin = '8px 0';
+                post.appendChild(contentDiv);
+
+                if (blog.image && blog.image.startsWith('data:image/')) {
+                    const img = document.createElement('img');
+                    img.src = blog.image;
+                    img.alt = 'Blog image';
+                    post.appendChild(img);
+                }
+
+                if (blog.tags && blog.tags.length) {
+                    const tagsDiv = document.createElement('div');
+                    tagsDiv.className = 'tags';
+                    blog.tags.forEach(t => {
+                        const span = document.createElement('span');
+                        span.className = 'tag';
+                        span.textContent = t;
+                        span.title = 'Filter by ' + t;
+                        span.onclick = () => {
+                            document.getElementById('tagFilter').value = t;
+                            loadFeed();
+                        };
+                        tagsDiv.appendChild(span);
+                    });
+                    post.appendChild(tagsDiv);
+                }
+
+                const likeBtn = document.createElement('button');
+                likeBtn.className = 'likeBtn' + (liked ? ' liked' : '');
+                likeBtn.textContent = `👍 ${likeCount}`;
+                likeBtn.onclick = () => toggleLike(blog.id, likeBtn);
+                post.appendChild(likeBtn);
+
+                const commentsDiv = document.createElement('div');
+                (blog.comments || []).forEach(c => {
+                    const div = document.createElement('div');
+                    div.className = 'comment';
+                    const authorSpan = document.createElement('strong');
+                    const cu = users.find(u => u.username === c.author);
+                    security.setSafeDisplayName(authorSpan, c.author, cu ? cu.nation : null, NATIONS);
+                    div.appendChild(authorSpan);
+                    div.appendChild(document.createTextNode(': ' + c.text));
+                    commentsDiv.appendChild(div);
+                });
+                post.appendChild(commentsDiv);
+
+                if (currentUser) {
+                    const commentForm = document.createElement('div');
+                    commentForm.className = 'comment-form';
+                    const ta = document.createElement('textarea');
+                    ta.placeholder = 'Add a comment…';
+                    ta.maxLength = 500;
+                    const btn = document.createElement('button');
+                    btn.textContent = 'Comment';
+                    btn.onclick = () => addComment(blog.id, ta);
+                    commentForm.appendChild(ta);
+                    commentForm.appendChild(btn);
+                    post.appendChild(commentForm);
+                }
+
+                feed.appendChild(post);
+            }
         }
 
-        const likeBtn = document.createElement('button');
-        likeBtn.className = 'likeBtn' + (liked ? ' liked' : '');
-        likeBtn.textContent = `👍 ${likeCount}`;
-        likeBtn.onclick = () => toggleLike(blog.id, likeBtn);
-        post.appendChild(likeBtn);
+        async function toggleLike(blogId, btn) {
+            if (!currentUser) { alert('Please log in to like posts.'); return; }
+            const users = await DB.getUsers();
+            const me = users.find(u => u.username === currentUser);
+            if (!me) return;
+            me.likedBlogs = me.likedBlogs || [];
+            me.likedTags = me.likedTags || [];
 
-        const commentsDiv = document.createElement('div');
-        (blog.comments || []).forEach(c => {
-            const div = document.createElement('div');
-            div.className = 'comment';
-            const authorSpan = document.createElement('strong');
-            const cu = users.find(u => u.username === c.author);
-            security.setSafeDisplayName(authorSpan, c.author, cu ? cu.nation : null, NATIONS);
-            div.appendChild(authorSpan);
-            div.appendChild(document.createTextNode(': ' + c.text));
-            commentsDiv.appendChild(div);
-        });
-        post.appendChild(commentsDiv);
+            const blogs = await DB.getBlogs();
+            const blog = blogs.find(b => b.id === blogId);
+            const idx = me.likedBlogs.indexOf(blogId);
 
-        if (currentUser) {
-            const commentForm = document.createElement('div');
-            commentForm.className = 'comment-form';
-            const ta = document.createElement('textarea');
-            ta.placeholder = 'Add a comment…';
-            ta.maxLength = 500;
-            const btn = document.createElement('button');
-            btn.textContent = 'Comment';
-            btn.onclick = () => addComment(blog.id, ta);
-            commentForm.appendChild(ta);
-            commentForm.appendChild(btn);
-            post.appendChild(commentForm);
+            if (idx > -1) {
+                me.likedBlogs.splice(idx, 1);
+                if (blog && blog.tags) blog.tags.forEach(t => {
+                    const ti = me.likedTags.indexOf(t);
+                    if (ti > -1) me.likedTags.splice(ti, 1);
+                });
+            } else {
+                me.likedBlogs.push(blogId);
+                if (blog && blog.tags) blog.tags.forEach(t => {
+                    if (!me.likedTags.includes(t)) me.likedTags.push(t);
+                });
+            }
+            await DB.saveUsers(users);
+            await loadFeed();
         }
 
-        feed.appendChild(post);
-    }
-}
+        async function addComment(blogId, textarea) {
+            if (!currentUser) return;
+            const text = textarea.value.trim();
+            if (!text) return;
+            if (text.length > 500) { alert('Comment too long (max 500 chars).'); return; }
+            const blogs = await DB.getBlogs();
+            const blog = blogs.find(b => b.id === blogId);
+            if (!blog) return;
+            blog.comments = blog.comments || [];
+            blog.comments.push({ author: currentUser, text: security.escapeHTML(text) });
+            await DB.saveBlogs(blogs);
+            textarea.value = '';
+            await loadFeed();
+        }
 
-async function toggleLike(blogId, btn) {
-    if (!currentUser) { alert('Please log in to like posts.'); return; }
-    const users = await DB.getUsers();
-    const me    = users.find(u => u.username === currentUser);
-    if (!me) return;
-    me.likedBlogs = me.likedBlogs || [];
-    me.likedTags  = me.likedTags  || [];
+        document.getElementById('blogSearch').addEventListener('input', loadFeed);
+        document.getElementById('tagFilter').addEventListener('change', loadFeed);
 
-    const blogs = await DB.getBlogs();
-    const blog  = blogs.find(b => b.id === blogId);
-    const idx   = me.likedBlogs.indexOf(blogId);
-
-    if (idx > -1) {
-        me.likedBlogs.splice(idx, 1);
-        if (blog && blog.tags) blog.tags.forEach(t => {
-            const ti = me.likedTags.indexOf(t);
-            if (ti > -1) me.likedTags.splice(ti, 1);
+        document.getElementById('globalSearch').addEventListener('keydown', async e => {
+            if (e.key === 'Enter') {
+                const term = e.target.value.trim();
+                if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
+            }
         });
-    } else {
-        me.likedBlogs.push(blogId);
-        if (blog && blog.tags) blog.tags.forEach(t => {
-            if (!me.likedTags.includes(t)) me.likedTags.push(t);
-        });
-    }
-    await DB.saveUsers(users);
-    await loadFeed();
-}
 
-async function addComment(blogId, textarea) {
-    if (!currentUser) return;
-    const text = textarea.value.trim();
-    if (!text) return;
-    if (text.length > 500) { alert('Comment too long (max 500 chars).'); return; }
-    const blogs = await DB.getBlogs();
-    const blog  = blogs.find(b => b.id === blogId);
-    if (!blog) return;
-    blog.comments = blog.comments || [];
-    blog.comments.push({ author: currentUser, text: security.escapeHTML(text) });
-    await DB.saveBlogs(blogs);
-    textarea.value = '';
-    await loadFeed();
-}
-
-document.getElementById('blogSearch').addEventListener('input', loadFeed);
-document.getElementById('tagFilter').addEventListener('change', loadFeed);
-
-document.getElementById('globalSearch').addEventListener('keydown', async e => {
-    if (e.key === 'Enter') {
-        const term = e.target.value.trim();
-        if (term) { await DB.setSearchTerm(term); window.location.href = 'foryou.html'; }
-    }
-});
-
-(async () => {
-    currentUser = await DB.getCurrentUser();
-    const term = await DB.getSearchTerm();
-    if (term) {
-        document.getElementById('blogSearch').value = term;
-        await DB.clearSearchTerm();
-    }
-    await loadFeed();
-})();
-</script>
+        (async () => {
+            currentUser = await DB.getCurrentUser();
+            const term = await DB.getSearchTerm();
+            if (term) {
+                document.getElementById('blogSearch').value = term;
+                await DB.clearSearchTerm();
+            }
+            await loadFeed();
+        })();
+    </script>
 </body>
+
 </html>

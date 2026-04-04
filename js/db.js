@@ -1,14 +1,13 @@
 /**
- * Hearts of Minecraft – Database Layer
- * Uses Dexie.js (IndexedDB) for zero-config, plug-and-play persistence.
- * Also manages cookie-based session (30-day auto-login) and
- * auto-migrates legacy localStorage data on first run.
- *
- * Expose: window.DB
+ * Hearts of Minecraft – Backend Database Layer
+ * Replaces IndexedDB/Dexie with direct Fetch calls to our internal Node.js + SQLite backend.
+ * Keeps the identical API so the rest of the site functions exactly as before.
  */
 
 (function () {
   'use strict';
+
+  const API_URL = 'http://localhost:3000/api';
 
   /* ─── Cookie helpers ────────────────────────────────────────────────────── */
   const COOKIE_NAME   = 'hom_session';
@@ -30,93 +29,86 @@
     document.cookie = `${COOKIE_NAME}=; max-age=0; SameSite=Strict; path=/`;
   }
 
-  /* ─── Dexie database definition ─────────────────────────────────────────── */
-  // Loaded via CDN (see each page's <script> tag before db.js)
-  const db = new Dexie('HoMDB');
-
-  db.version(2).stores({
-    users    : '&username',          // primary key = username
-    blogs    : '&id, author, date',  // unique id, indexes on author & date
-    settings : '&key'                // key/value store (searchTerm, etc.)
-  });
-
-  /* ─── Migrate legacy localStorage data ──────────────────────────────────── */
-  async function _migrateLocalStorage() {
-    try {
-      const flag = await db.settings.get('migrated_v1');
-      if (flag) return;
-
-      const lsUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      const lsBlogs = JSON.parse(localStorage.getItem('blogs') || '[]');
-
-      if (lsUsers.length) await db.users.bulkPut(lsUsers).catch(() => {});
-      if (lsBlogs.length) await db.blogs.bulkPut(lsBlogs).catch(() => {});
-
-      // Migrate current session
-      const lsUser = localStorage.getItem('currentUser');
-      if (lsUser) _setCookie(lsUser);
-
-      await db.settings.put({ key: 'migrated_v1', value: true });
-      console.info('[HoMDB] Migrated', lsUsers.length, 'users,', lsBlogs.length, 'blogs from localStorage.');
-    } catch (e) {
-      console.warn('[HoMDB] Migration failed (non-fatal):', e);
-    }
-  }
-
-  /* ─── DB ready promise ───────────────────────────────────────────────────── */
-  const _ready = db.open().then(_migrateLocalStorage);
-
-  async function _ensureReady() {
-    await _ready;
-  }
-
   /* ─── Public API ─────────────────────────────────────────────────────────── */
   const DB = {
 
     // ── Users ────────────────────────────────────────────────────────────────
     async getUsers() {
-      await _ensureReady();
-      return db.users.toArray();
+      try {
+        const res = await fetch(`${API_URL}/users`);
+        return await res.json();
+      } catch (e) {
+        console.error('API Error: getUsers()', e);
+        return [];
+      }
     },
 
     async saveUsers(usersArray) {
-      await _ensureReady();
-      await db.users.bulkPut(usersArray);
+      if(!usersArray || !usersArray.length) return;
+      try {
+        await fetch(`${API_URL}/users/bulk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(usersArray)
+        });
+      } catch (e) { console.error('API Error: saveUsers()', e); }
     },
 
     async getUser(username) {
-      await _ensureReady();
-      return db.users.get(username);
+      try {
+        const res = await fetch(`${API_URL}/users/${encodeURIComponent(username)}`);
+        return await res.json();
+      } catch (e) {
+        console.error('API Error: getUser()', e);
+        return null;
+      }
     },
 
     async saveUser(userObj) {
-      await _ensureReady();
-      await db.users.put(userObj);
+      try {
+        await fetch(`${API_URL}/users`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userObj)
+        });
+      } catch (e) { console.error('API Error: saveUser()', e); }
     },
 
     // ── Blogs ────────────────────────────────────────────────────────────────
     async getBlogs() {
-      await _ensureReady();
-      return db.blogs.toArray();
+      try {
+        const res = await fetch(`${API_URL}/blogs`);
+        return await res.json();
+      } catch (e) {
+        console.error('API Error: getBlogs()', e);
+        return [];
+      }
     },
 
     async saveBlogs(blogsArray) {
-      await _ensureReady();
-      // Overwrite all – replaces the whole collection atomically
-      await db.transaction('rw', db.blogs, async () => {
-        await db.blogs.clear();
-        if (blogsArray.length) await db.blogs.bulkAdd(blogsArray);
-      });
+      try {
+        await fetch(`${API_URL}/blogs/bulk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(blogsArray || [])
+        });
+      } catch (e) { console.error('API Error: saveBlogs()', e); }
     },
 
     async saveBlog(blogObj) {
-      await _ensureReady();
-      await db.blogs.put(blogObj);
+      try {
+        await fetch(`${API_URL}/blogs`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(blogObj)
+        });
+      } catch (e) { console.error('API Error: saveBlog()', e); }
     },
 
     async deleteBlog(id) {
-      await _ensureReady();
-      await db.blogs.delete(id);
+      try {
+        await fetch(`${API_URL}/blogs/${id}`, { method: 'DELETE' });
+      } catch (e) { console.error('API Error: deleteBlog()', e); }
     },
 
     // ── Session (cookie-based) ────────────────────────────────────────────────
@@ -132,21 +124,17 @@
       _clearCookie();
     },
 
-    // ── Search term (cross-page pass) ─────────────────────────────────────────
+    // ── Search term (Session Storage) ─────────────────────────────────────────
     async getSearchTerm() {
-      await _ensureReady();
-      const row = await db.settings.get('searchTerm');
-      return row ? row.value : '';
+      return sessionStorage.getItem('hom_searchTerm') || '';
     },
 
     async setSearchTerm(term) {
-      await _ensureReady();
-      await db.settings.put({ key: 'searchTerm', value: term });
+      sessionStorage.setItem('hom_searchTerm', term);
     },
 
     async clearSearchTerm() {
-      await _ensureReady();
-      await db.settings.delete('searchTerm');
+      sessionStorage.removeItem('hom_searchTerm');
     }
   };
 
